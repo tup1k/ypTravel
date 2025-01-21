@@ -393,6 +393,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CarrierResponse'
+        "400":
+           description: Нет ответа сервера
+        "404":
+           description: Нет данных
   /v3.0/stations_list/:
     get:
       tags:

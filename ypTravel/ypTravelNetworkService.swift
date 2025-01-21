@@ -9,10 +9,9 @@ typealias TwoStationSchedule = Components.Schemas.Segments
 typealias OneStationSchedule = Components.Schemas.ScheduleResponse
 typealias StationsOnTheRoute = Components.Schemas.ThreadStationsResponse
 typealias NearestSettlementInfo = Components.Schemas.NearestCityResponse
-
-
+typealias CarrierInfo = Components.Schemas.CarrierResponse
 typealias StationInfo = Components.Schemas.AllStationsResponse
-
+typealias CopyrightInfo = Components.Schemas.CopyrightResponse
 
 protocol ypTravelNetworkServiceProtocol {
     func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations
@@ -20,11 +19,10 @@ protocol ypTravelNetworkServiceProtocol {
     func getStationSchedule(station: String) async throws -> OneStationSchedule
     func getRouteStations(uid: String) async throws -> StationsOnTheRoute
     func getNearestCity(lat: Double, lng: Double) async throws -> NearestSettlementInfo
-    
-    
+    func getCarrierInfo(code: String) async throws -> CarrierInfo
     func getAllStations() async throws -> StationInfo
+    func getCopyright() async throws -> CopyrightInfo
 }
-
 
 final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     private let client: Client
@@ -84,9 +82,17 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         return try response.ok.body.json
     }
     
+    /// Информация о перевозчике
+    func getCarrierInfo(code: String) async throws -> CarrierInfo {
+        let response = try await client.getCarrierInfo(query: .init(
+            apikey: apikey,
+            code: code
+        ))
+        print(try response.ok.body.json)
+        return try response.ok.body.json
+    }
     
-    
-    
+   /// Информация о всех станциях
     func getAllStations() async throws -> StationInfo {
         var data = Data()
         
@@ -105,6 +111,12 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
             print("Запрос выдал ошибку: \(error)")
             throw error
         }
+    }
+    
+    /// Копирайт Яндекс Расписаний
+    func getCopyright() async throws -> CopyrightInfo {
+        let response = try await client.getCopyright(query: .init(apikey: apikey))
+        return try response.ok.body.json
     }
 }
 
