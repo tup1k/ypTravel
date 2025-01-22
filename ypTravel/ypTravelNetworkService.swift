@@ -88,7 +88,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
             apikey: apikey,
             code: code
         ))
-        print(try response.ok.body.json)
+        print(try response.badRequest)
         return try response.ok.body.json
     }
     

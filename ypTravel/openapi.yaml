@@ -693,6 +693,11 @@ components:
         email:
           type: string
           description: Электронная почта перевозчика
+        offices:
+          type: array
+          description: Список офисов перевозчика
+          items:
+            type: string
         codes:
           type: object
           properties:
@@ -873,7 +878,7 @@ components:
     CarrierResponse:
       type: object
       properties:
-        carriers:
+        carrier:
           type: array
           items:
             $ref: '#/components/schemas/Carrier'

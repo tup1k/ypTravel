@@ -87,10 +87,8 @@ struct ContentView: View {
     
     func carrierInfo() {
         Task {
-            let carrierInfo = try await service.getCarrierInfo(code: "680")
-            for carriers in carrierInfo.carriers ?? [] {
-                print(carriers.title ?? "No carrier data")
-            }
+            let carrierInfo = try await service.getCarrierInfo(code: "112")
+            print(carrierInfo.carrier?.count)
         }
     }
     
