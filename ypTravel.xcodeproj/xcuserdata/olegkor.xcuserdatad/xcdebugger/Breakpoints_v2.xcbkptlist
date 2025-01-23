@@ -3,4 +3,80 @@
    uuid = "7C2786F2-BD08-4C46-953E-2A9AE161EB64"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5BD4DC69-FCB4-4C26-BDD2-AFCE85EFECCB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ypTravel/ypTravelNetworkService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "getCarrierInfo(code:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5BD4DC69-FCB4-4C26-BDD2-AFCE85EFECCB - 891156ba2006b582"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for ypTravel.YPTravelNetworkService.getCarrierInfo(code: Swift.String) async throws -&gt; ypTravel.Components.Schemas.CarrierResponse"
+                  moduleName = "ypTravel.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegkor/Documents/swift_example/yaPracticum/gitDir/ypTravel/ypTravel/ypTravelNetworkService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88">
+               </Location>
+               <Location
+                  uuid = "5BD4DC69-FCB4-4C26-BDD2-AFCE85EFECCB - f1ecb3e85b22090a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for ypTravel.YPTravelNetworkService.getCarrierInfo(code: Swift.String) async throws -&gt; ypTravel.Components.Schemas.CarrierResponse"
+                  moduleName = "ypTravel.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegkor/Documents/swift_example/yaPracticum/gitDir/ypTravel/ypTravel/ypTravelNetworkService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88">
+               </Location>
+               <Location
+                  uuid = "5BD4DC69-FCB4-4C26-BDD2-AFCE85EFECCB - f6695bbc3c287000"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for ypTravel.YPTravelNetworkService.getCarrierInfo(code: Swift.String) async throws -&gt; ypTravel.Components.Schemas.CarrierResponse"
+                  moduleName = "ypTravel.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegkor/Documents/swift_example/yaPracticum/gitDir/ypTravel/ypTravel/ypTravelNetworkService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88">
+               </Location>
+               <Location
+                  uuid = "5BD4DC69-FCB4-4C26-BDD2-AFCE85EFECCB - d12d5e430ac74e41"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for ypTravel.YPTravelNetworkService.getCarrierInfo(code: Swift.String) async throws -&gt; ypTravel.Components.Schemas.CarrierResponse"
+                  moduleName = "ypTravel.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olegkor/Documents/swift_example/yaPracticum/gitDir/ypTravel/ypTravel/ypTravelNetworkService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

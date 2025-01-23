@@ -69,6 +69,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
             apikey: apikey,
             uid: uid
         ))
+        print(try response.ok.body.json)
         return try response.ok.body.json
     }
     
@@ -88,7 +89,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
             apikey: apikey,
             code: code
         ))
-        print(try response.badRequest)
+        print(response)
         return try response.ok.body.json
     }
     

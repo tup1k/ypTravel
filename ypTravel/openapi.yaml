@@ -163,6 +163,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Segments'
+        "400":
+          description: Нет ответа
+        "404":
+          description: Нет данных
   /v3.0/schedule/:
     get:
       tags:
@@ -672,44 +676,43 @@ components:
         code:
           type: integer
           description: Код перевозчика в системе Яндекс Расписаний
-        contacts:
-          type: string
-          description: Контактная информация
-        url:
-          type: string
-          description: Ссылка на сайт перевозчика
         title:
           type: string
           description: Название перевозчика
-        phone:
-          type: string
-          description: Контактный телефон перевозчика
-        address:
-          type: string
-          description: Адрес перевозчика
-        logo:
-          type: string
-          description: Ссылка на логотип перевозчика
-        email:
-          type: string
-          description: Электронная почта перевозчика
-        offices:
-          type: array
-          description: Список офисов перевозчика
-          items:
-            type: string
         codes:
           type: object
           properties:
-            icao:
-              type: string
-              description: Код перевозчика в системе ICAO
             sirena:
               type: string
               description: Код перевозчика в системе Sirena
             iata:
               type: string
-              description: Код перевозчика в системе IATA    
+              description: Код перевозчика в системе IATA
+            icao:
+              type: string
+              description: Код перевозчика в системе ICAO
+        address:
+          type: string
+          description: Адрес перевозчика
+        url:
+          type: string
+          description: Ссылка на сайт перевозчика
+        email:
+          type: string
+          description: Электронная почта перевозчика
+        contacts:
+          type: string
+          description: Контактная информация
+        phone:
+          type: string
+          description: Контактный телефон перевозчика
+        logo:
+          type: string
+          description: Ссылка на логотип перевозчика
+        offices:
+          type: array
+          format: string
+          description: Список офисов перевозчика
     TicketsInfo:
       type: object
       properties:

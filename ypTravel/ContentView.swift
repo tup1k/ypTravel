@@ -10,11 +10,16 @@ import OpenAPIURLSession
 
 struct ContentView: View {
     
-    private let client = Client(serverURL: try! Servers.Server1.url(), transport: URLSessionTransport())
+    private let client: Client
     private let service: YPTravelNetworkService
     
     init () {
-       service = YPTravelNetworkService(client: self.client, apikey: Constants.apiKey)
+        do {
+            client = Client(serverURL: try Servers.Server1.url(), transport: URLSessionTransport())
+            service = YPTravelNetworkService(client: self.client, apikey: Constants.apiKey)
+        } catch {
+            fatalError()
+        }
     }
     
     var body: some View {
@@ -67,7 +72,7 @@ struct ContentView: View {
     func stationSchedule() {
         Task {
             let schedule = try await service.getStationSchedule(station: "s9600213")
-            print(schedule.directions)
+            print(schedule.schedule)
         }
     }
     
@@ -88,7 +93,7 @@ struct ContentView: View {
     func carrierInfo() {
         Task {
             let carrierInfo = try await service.getCarrierInfo(code: "112")
-            print(carrierInfo.carrier?.count)
+            print(carrierInfo.carrier?.count ?? "No carrier data")
         }
     }
     
