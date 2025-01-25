@@ -33,24 +33,15 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         self.apikey = apikey
     }
     
-    /// Список ближайших станций
-    func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
-        let response = try await client.getNearestStations(query: .init(
-            apikey: apikey,
-            lat: lat,
-            lng: lng,
-            distance: distance
-        ))
-        return try response.ok.body.json
-    }
-    
     /// Расписание рейсов между станциями
     func getScheduleBetweenStations(from: String, to: String) async throws -> TwoStationSchedule {
         let response = try await client.getScheduleBetweenStations(query: .init(
             apikey: apikey,
             from: from,
-            to: to
+            to: to,
+            date: "2025-01-25"
         ))
+        print(try response.ok.body.json)
         return try response.ok.body.json
     }
     
@@ -58,7 +49,8 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     func getStationSchedule(station: String) async throws -> OneStationSchedule {
         let response = try await client.getStationSchedule(query: .init(
             apikey: apikey,
-            station: station
+            station: station,
+            date: "2025-01-22"
         ))
         return try response.ok.body.json
     }
@@ -67,9 +59,21 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     func getRouteStations(uid: String) async throws -> StationsOnTheRoute {
         let response = try await client.getRouteStations(query: .init(
             apikey: apikey,
-            uid: uid
+            uid: uid,
+            date: "2025-01-22"
         ))
         print(try response.ok.body.json)
+        return try response.ok.body.json
+    }
+    
+    /// Список ближайших станций
+    func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
+        let response = try await client.getNearestStations(query: .init(
+            apikey: apikey,
+            lat: lat,
+            lng: lng,
+            distance: distance
+        ))
         return try response.ok.body.json
     }
     
