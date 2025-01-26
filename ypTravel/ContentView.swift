@@ -86,7 +86,7 @@ struct ContentView: View {
                 let stations = try await service.getRouteStations(uid: "028S_3_2")
                 print(stations.title ?? "No stations data")
             } catch {
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }

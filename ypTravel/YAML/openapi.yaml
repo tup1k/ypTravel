@@ -740,11 +740,11 @@ components:
       properties:
         arrival:
           type: string
-          format: date-time
+#          format: date-time
           nullable: true
         departure:
           type: string
-          format: date-time
+#          format: date-time
         stop_time:
           type: integer
           nullable: true
@@ -887,14 +887,14 @@ components:
           $ref: '#/components/schemas/Station'
         start_date:
           type: string
-          format: date
+#          format: date
         arrival_date:
           type: string
-          format: date
+#          format: date
           nullable: true
         departure_date:
           type: string
-          format: date
+#          format: date
           nullable: true
         start_time:
           type: string

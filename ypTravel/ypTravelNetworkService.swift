@@ -59,8 +59,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     func getRouteStations(uid: String) async throws -> StationsOnTheRoute {
         let response = try await client.getRouteStations(query: .init(
             apikey: apikey,
-            uid: uid,
-            date: "2025-01-22"
+            uid: uid
         ))
         print(try response.ok.body.json)
         return try response.ok.body.json
