@@ -6,13 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		84E651922D3310E8005E054A /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 84E651912D3310E8005E054A /* OpenAPIRuntime */; };
+		84E651952D331102005E054A /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 84E651942D331102005E054A /* OpenAPIURLSession */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		84E6515E2D305C8E005E054A /* ypTravel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ypTravel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		84E651A22D344E9C005E054A /* Exceptions for "ypTravel" folder in "ypTravel" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 84E6515D2D305C8E005E054A /* ypTravel */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		84E651602D305C8E005E054A /* ypTravel */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				84E651A22D344E9C005E054A /* Exceptions for "ypTravel" folder in "ypTravel" target */,
+			);
 			path = ypTravel;
 			sourceTree = "<group>";
 		};
@@ -23,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84E651952D331102005E054A /* OpenAPIURLSession in Frameworks */,
+				84E651922D3310E8005E054A /* OpenAPIRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				84E651602D305C8E005E054A /* ypTravel */,
+				84E6518D2D33105D005E054A /* Frameworks */,
 				84E6515F2D305C8E005E054A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +64,13 @@
 				84E6515E2D305C8E005E054A /* ypTravel.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		84E6518D2D33105D005E054A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,12 +87,15 @@
 			buildRules = (
 			);
 			dependencies = (
+				84E6518C2D331052005E054A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				84E651602D305C8E005E054A /* ypTravel */,
 			);
 			name = ypTravel;
 			packageProductDependencies = (
+				84E651912D3310E8005E054A /* OpenAPIRuntime */,
+				84E651942D331102005E054A /* OpenAPIURLSession */,
 			);
 			productName = ypTravel;
 			productReference = 84E6515E2D305C8E005E054A /* ypTravel.app */;
@@ -94,6 +125,11 @@
 			);
 			mainGroup = 84E651552D305C8E005E054A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				84E651782D330EE3005E054A /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
+				84E651902D3310E8005E054A /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
+				84E651932D331102005E054A /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 84E6515F2D305C8E005E054A /* Products */;
 			projectDirPath = "";
@@ -123,6 +159,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		84E6518C2D331052005E054A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 84E6518B2D331052005E054A /* OpenAPIGenerator */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		84E6516A2D305C8F005E054A /* Debug */ = {
@@ -254,10 +297,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ypTravel/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ypTravel/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
@@ -288,10 +331,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"ypTravel/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ypTravel/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
@@ -334,6 +377,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		84E651782D330EE3005E054A /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-generator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
+			};
+		};
+		84E651902D3310E8005E054A /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-runtime";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.0;
+			};
+		};
+		84E651932D331102005E054A /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-urlsession";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		84E6518B2D331052005E054A /* OpenAPIGenerator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84E651782D330EE3005E054A /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
+			productName = "plugin:OpenAPIGenerator";
+		};
+		84E651912D3310E8005E054A /* OpenAPIRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84E651902D3310E8005E054A /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */;
+			productName = OpenAPIRuntime;
+		};
+		84E651942D331102005E054A /* OpenAPIURLSession */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84E651932D331102005E054A /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */;
+			productName = OpenAPIURLSession;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84E651562D305C8E005E054A /* Project object */;
 }
