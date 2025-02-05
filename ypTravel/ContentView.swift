@@ -13,6 +13,7 @@ struct ContentView: View {
     private let client: Client
     private let service: YPTravelNetworkService
     
+    
     init () {
         do {
             client = Client(serverURL: try Servers.Server1.url(), transport: URLSessionTransport())
@@ -22,11 +23,15 @@ struct ContentView: View {
         }
     }
     
+   
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
+
+            
             Button("Вывести расписание рейсов между станциями (scheduleBetweenStations)") {
                 scheduleBetweenStations()
             }.padding()
@@ -54,6 +59,11 @@ struct ContentView: View {
         }
         .padding()
     }
+    
+    func confirm() {
+        
+    }
+    
     
     /// Метод вывода расписания рейсов между двумя остановками
     private func scheduleBetweenStations() {
