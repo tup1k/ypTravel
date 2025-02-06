@@ -8,8 +8,17 @@
 import SwiftUI
 
 struct CarrierListView: View {
+    @StateObject var viewModel = RouteCarrierListViewModel()
+    let columns = [GridItem(.flexible())]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView (.vertical, showsIndicators: false) {
+            LazyVGrid(columns: columns, spacing: 20) {
+                ForEach(viewModel.carrierList, id: \.self) { routeCarrierInfo in
+                    CarrierListCell(routeCarrierInfo: routeCarrierInfo)
+                }
+            }
+        }
     }
 }
 

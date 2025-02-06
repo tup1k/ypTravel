@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct CitySelectionView: View {
+    @StateObject var viewModel = CityViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List(viewModel.cities) { city in
+                NavigationLink(city.name, value: city)
+            }
+            .font(.system(size: 17))
+            .navigationDestination(for: City.self) { city in
+                CityDetails(city: city)
+            }
+        }
     }
 }
 

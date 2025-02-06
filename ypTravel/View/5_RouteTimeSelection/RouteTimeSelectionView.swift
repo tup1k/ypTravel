@@ -21,6 +21,7 @@ struct RouteTimeSelectionView: View {
                 .padding()
                 .fontWeight(.bold)
                 .font(.system(size: 24))
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             CheckBoxView(timeText: "Утро 06:00 - 12:00", isSquare: true, checked: $from6to12timeFilterIsOn)
             CheckBoxView(timeText: "День 12:00 - 18:00", isSquare: true, checked: $from12to18timeFilterIsOn)
@@ -31,22 +32,25 @@ struct RouteTimeSelectionView: View {
                 .padding()
                 .fontWeight(.bold)
                 .font(.system(size: 24))
+                .frame(maxWidth: .infinity, alignment: .leading)
             
             CheckBoxView(timeText: "Да", isSquare: false, checked: $isShowWithTransfers)
             CheckBoxView(timeText: "Нет", isSquare: false, checked: $isShowWithTransfers)
 
+            Spacer()
+            
             Button(action: {}) {
             
-                Text("Применить фильтры")
+                Text("Применить")
                     .padding()
                     .foregroundColor(.white)
                     .frame(width: .infinity, height: 44)
                     .background(Color.blue)
                     .cornerRadius(8)
             }
-            
-            
+            .frame(maxWidth: .infinity, alignment: .bottom)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         
        
             
@@ -68,8 +72,8 @@ private struct CheckBoxView: View {
         HStack {
             Text(timeText)
                 .font(.system(size: 17))
+            Spacer()
             Image(systemName: checked ? "checkmark." + circleOrSquare + ".fill" : circleOrSquare)
-                .foregroundColor(checked ? Color(UIColor.systemBlue) : Color.secondary)
                 .onTapGesture {
                     self.checked.toggle()
                 }

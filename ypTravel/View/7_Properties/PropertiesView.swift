@@ -18,7 +18,7 @@ struct PropertiesView: View {
             .toggleStyle(.switch)
             
             List {
-                Text("Пользовательское соглащение")
+                Text("Пользовательское соглашение")
             }
         }
        
