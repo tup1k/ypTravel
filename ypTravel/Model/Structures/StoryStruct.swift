@@ -8,7 +8,8 @@
 import SwiftUI
 import UIKit
 
-struct Story: Hashable {
+struct Story: Hashable, Identifiable {
+    var id = UUID()
     var imageName: String
 }
 
