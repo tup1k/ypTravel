@@ -17,13 +17,14 @@ struct StoriesCellView: View {
             Image(story.imageName)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 4).foregroundColor(.ypBlue))
-            Text("Text")
+            Text("Text Text Text Text Text Text Text Text Text")
                 .foregroundStyle(.ypWhiteUniversal)
-                .scaledToFit()
+                .font(.system(size: 12))
                 .multilineTextAlignment(.leading)
-            
-                
-                
+                .frame(width: 76, alignment: .leading)
+                .padding(.top, 83)
+                .clipped()
+               
         }
     }
 }

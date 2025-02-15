@@ -17,7 +17,6 @@ class RouteCarrierListViewModel: ObservableObject {
         let carrier_4 = RouteCarrierStruct(carrierImage: "RZD", carrierName: "РЖД", transferInfo: "С пересадкой в Костроме", routeDate: "17 января", routeStartTime: "22:30", routeEndTime: "08:15", routeDuration: "20")
         let carrier_5 = RouteCarrierStruct(carrierImage: "RZD", carrierName: "РЖД", transferInfo: "", routeDate: "17 января", routeStartTime: "23:45", routeEndTime: "09:30", routeDuration: "20")
        
-        
         self.carrierList = [carrier_1, carrier_2, carrier_3, carrier_4, carrier_5]
     }
 }

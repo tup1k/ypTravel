@@ -39,21 +39,20 @@ struct RouteTimeSelectionView: View {
 
             Spacer()
             
-            Button(action: {}) {
-            
+            Button(action: {})
+            {
                 Text("Применить")
-                    .padding()
-                    .foregroundColor(.white)
-                    .frame(width: .infinity, height: 44)
-                    .background(Color.blue)
-                    .cornerRadius(8)
+                    .frame(width: 343, height: 60)
+                    .padding(.horizontal, 16)
+                    .background(.ypBlue)
+                    .foregroundColor(.ypWhite)
+                    .cornerRadius(16)
+                    .font(.system(size: 17, weight: .bold))
+                    .padding(.bottom, 24)
             }
             .frame(maxWidth: .infinity, alignment: .bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        
-       
-            
         }
             
     }

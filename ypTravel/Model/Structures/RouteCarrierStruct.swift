@@ -8,7 +8,8 @@
 import SwiftUI
 import UIKit
 
-struct RouteCarrierStruct: Hashable {
+struct RouteCarrierStruct: Hashable, Identifiable {
+    let id = UUID()
     var carrierImage: String
     var carrierName: String
     var transferInfo: String

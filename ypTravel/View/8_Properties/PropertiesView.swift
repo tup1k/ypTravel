@@ -22,12 +22,22 @@ struct PropertiesView: View {
                     .padding(.bottom, 38)
                     
                     NavigationLink(destination: UserAgreement()) {
-                        HStack {
-                            Text("Пользовательское соглашение")
+                        VStack {
+                            HStack {
+                                Text("Пользовательское соглашение")
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                            }
+                            .font(.system(size: 17, weight: .regular, design: .default))
+                            
                             Spacer()
-                            Image(systemName: "chevron.right")
+                            
+                            Text("Приложение использует API «Яндекс.Расписания»")
+                                .font(.system(size: 12, weight: .regular, design: .default))
+                                .padding()
+                            Text("Версия 1.0 (beta)")
+                                .font(.system(size: 12, weight: .regular, design: .default))
                         }
-                        .font(.system(size: 17, weight: .regular, design: .default))
                     }
                     .foregroundColor(.ypBlack)
                     

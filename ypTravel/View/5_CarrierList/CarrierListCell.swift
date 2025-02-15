@@ -14,6 +14,8 @@ struct CarrierListCell: View {
         VStack {
             HStack {
                 Image(routeCarrierInfo.carrierImage)
+                    .resizable()
+                    .frame(width: 38, height: 38)
                 VStack(alignment: .leading) {
                     Text(routeCarrierInfo.carrierName)
                         .foregroundStyle(.ypBlack)
@@ -22,8 +24,7 @@ struct CarrierListCell: View {
                         .font(.system(size: 17, weight: .regular, design: .default))
                     Text(routeCarrierInfo.transferInfo)
                         .font(.system(size: 12, weight: .regular, design: .default))
-                        .fontWeight(.regular)
-                        .foregroundColor(Color("ypRed"))
+                        .foregroundColor(Color.ypRed)
                 }
                 Spacer()
                 Text(routeCarrierInfo.routeDate)
@@ -34,35 +35,31 @@ struct CarrierListCell: View {
             }
             .padding(.horizontal, 14)
             .padding(.top, 14)
+            .padding(.bottom, 18)
  
-            HStack {
+            HStack(alignment: .center) {
                 Text(routeCarrierInfo.routeStartTime)
                     .foregroundStyle(.ypBlack)
                     .scaledToFit()
                     .multilineTextAlignment(.leading)
                     .font(.system(size: 17, weight: .regular, design: .default))
                 Rectangle()
-                    .frame(width: 74.5, height: 1)
+                    .frame(height: 1)
                     .foregroundColor(.ypGray)
                 Text("\(routeCarrierInfo.routeDuration) часов")
                     .foregroundStyle(.ypBlack)
-                    .scaledToFit()
-                    .multilineTextAlignment(.leading)
                     .font(.system(size: 12, weight: .regular, design: .default))
                 Rectangle()
-                    .frame(width: 74.5, height: 1)
+                    .frame(height: 1)
                     .foregroundColor(.ypGray)
                 Text(routeCarrierInfo.routeEndTime)
                     .foregroundStyle(.ypBlack)
-                    .scaledToFit()
-                    .multilineTextAlignment(.leading)
                     .font(.system(size: 17, weight: .regular, design: .default))
             }
             .padding(.horizontal, 14)
             .padding(.bottom, 14)
         }
         .background(.ypLightGray)
-        
         .cornerRadius(24)
         .padding(.horizontal, 16)
     }
