@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct StationSelectionView: View {
-//    @EnvironmentObject var navigationArray: NavigationModel
-    @StateObject var viewModel = CityViewModel()
+    @EnvironmentObject var navigationArray: NavigationModel
     @State private var searchText: String = ""
+    @Binding var selectedStation: String
     
-    var selectedCity: String?
+    var selectedCity: String
     var selectedCityStations: [Station]
-//    var fromOrTo:Bool
-//    @Binding var selectedStation: String
+    var isFrom: Bool
+
     
     var body: some View {
         var stationArray: [Station] {
@@ -29,7 +29,7 @@ struct StationSelectionView: View {
         VStack {
             HStack {
                 Button(action: {
-//                    navigationArray.pop()
+                    navigationArray.pop()
                 }) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.ypBlack)
@@ -52,8 +52,8 @@ struct StationSelectionView: View {
             } else {
                 List(stationArray) { station in
                     Button {
-//                        selectedStation = "\(station.name)"
-//                        navigationArray.popToRoot()
+                        selectedStation = "\(selectedCity) (\(station.name))"
+                        navigationArray.popToRoot()
                     } label: {
                         HStack {
                             Text(station.name)
@@ -64,15 +64,18 @@ struct StationSelectionView: View {
                     }
                     .listRowSeparator(.hidden)
                 }
-                .navigationBarBackButtonHidden(true)
                 .listStyle(.inset)
             }
             Spacer()
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 
 #Preview {
-        StationSelectionView(viewModel: CityViewModel(), selectedCityStations: [Station(name: "123"), Station(name: "123"), Station(name: "123")])
+    NavigationStack {
+        StationSelectionView(selectedStation: .constant("123"), selectedCity: "Moscow", selectedCityStations: [Station(name: "123"), Station(name: "234")], isFrom: true)
+            .environmentObject(NavigationModel())
+    }
 }

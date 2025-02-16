@@ -10,9 +10,10 @@ import SwiftUI
 struct CarrierListView: View {
     @StateObject var viewModel = RouteCarrierListViewModel()
     @Environment(\.dismiss) private var dismiss
-    @State var from: String
-    @State var to: String
-//    @State var isFiltered: Bool
+    var from: String
+    var to: String
+    @State var showFilter: Bool = false
+    @State var isFiltered: Bool
     let columns = [GridItem(.flexible())]
     
     var body: some View {
@@ -35,9 +36,11 @@ struct CarrierListView: View {
                     .padding(.horizontal, 16)
                     .lineLimit(nil)
                 ScrollView (.vertical, showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 20) {
+                    LazyVGrid(columns: columns) {
                         ForEach(viewModel.carrierList) { routeCarrierInfo in
-                                CarrierListCell(routeCarrierInfo: routeCarrierInfo)
+                            NavigationLink(destination: CarrierInfoView()) {
+                                    CarrierListCell(routeCarrierInfo: routeCarrierInfo)
+                                }
                         }
                     }
                 }
@@ -46,13 +49,13 @@ struct CarrierListView: View {
             VStack {
                 Spacer()
                 Button(action: {
-                    
+                    showFilter = true
+                    self.isFiltered = isFiltered
                 }) {
                     HStack {
                         Text("Уточнить время")
                         Circle()
-//                            .fill(isFiltered ? Color.ypBlue : Color.ypRed)
-                            .fill(Color.ypRed)
+                            .fill(isFiltered ? .ypRed : .ypBlue)
                             .frame(width: 8, height: 8)
                     }
                 }
@@ -62,6 +65,9 @@ struct CarrierListView: View {
                 .foregroundColor(.ypWhite)
                 .background(Color.ypBlue)
                 .cornerRadius(16)
+                .navigationDestination(isPresented: $showFilter) {
+                    RouteTimeSelectionView(isFiltered: $isFiltered)
+                }
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -69,5 +75,7 @@ struct CarrierListView: View {
 }
 
 #Preview {
-    CarrierListView(from: "Москва (Ярославский вокзал)", to: "Санкт Петербург (Балтийский вокзал)")
+    NavigationStack {
+        CarrierListView(from: "Москва (Ярославский вокзал)", to: "Санкт Петербург (Балтийский вокзал)", isFiltered: false)
+    }
 }

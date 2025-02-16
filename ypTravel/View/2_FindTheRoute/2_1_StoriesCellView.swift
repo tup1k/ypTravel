@@ -17,7 +17,7 @@ struct StoriesCellView: View {
             Image(story.imageName)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 4).foregroundColor(.ypBlue))
-            Text("Text Text Text Text Text Text Text Text Text")
+            Text(story.text)
                 .foregroundStyle(.ypWhiteUniversal)
                 .font(.system(size: 12))
                 .multilineTextAlignment(.leading)
@@ -30,5 +30,5 @@ struct StoriesCellView: View {
 }
 
 #Preview {
-    StoriesCellView(story: Story(imageName: "MokStorie_1"))
+    StoriesCellView(story: Story(imageName: "MokStorie_1", text: "Text text text text text text text text text text text text text"))
 }

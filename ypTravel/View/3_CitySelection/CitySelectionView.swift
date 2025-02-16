@@ -11,8 +11,8 @@ struct CitySelectionView: View {
     @EnvironmentObject var navigationArray: NavigationModel
     @StateObject var viewModel = CityViewModel()
     @State private var searchText: String = ""
-//    @Binding var selectedCity: String
-    var isFrom:Bool
+
+    var isFrom: Bool
     
     var cityArray: [City] {
         if searchText.isEmpty {
@@ -42,31 +42,35 @@ struct CitySelectionView: View {
             SearchBar(searchText: $searchText)
             
             if cityArray.isEmpty {
-                Text("Город не найден")
-                    .font(.system(size: 24, weight: .bold))
+                VStack {
+                    Spacer()
+                    Text("Город не найден")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
             } else {
                 List(cityArray) { city in
                     Button {
-//                        selectedCity = "\(city.name)"
-//                        navigationArray.push(.stationView)
+                        navigationArray.push(.stationView(city.name, city.stations, isFrom))
                     } label: {
                         HStack {
                             Text(city.name)
+                                .frame(height: 60)
+                                .font(.system(size: 17))
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.ypBlack)
                         }
+                        .padding(.vertical)
                     }
                     .listRowSeparator(.hidden)
-                    
-//                    NavigationLink(city.name, value: city)
-//                        .listRowSeparator(.hidden)
+                    .buttonStyle(.bordered)
                 }
-                .font(.system(size: 17))
-                .listStyle(.inset)
-                .navigationBarBackButtonHidden(true)
+                .listStyle(.plain)
+                
             }
         }
+        .navigationBarBackButtonHidden(true)
         
     }
 }

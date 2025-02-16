@@ -27,7 +27,9 @@ struct CarrierInfoView: View {
             }
             
             Image("RZDLarge")
-                .padding()
+                .resizable()
+                .scaledToFit()
+//                .background(.ypBlack)
             
             Text("ОАО «РЖД»")
                 .font(.system(size: 24, weight: .bold))
@@ -38,8 +40,8 @@ struct CarrierInfoView: View {
                     .font(.system(size: 17, weight: .regular))
                     .foregroundColor(.ypBlack)
                 Text("i.lozgkina@yandex.ru")
-                    .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.ypBlue)
+                    .font(.system(size: 12, weight: .regular))
             }
             
             VStack(alignment: .leading) {
@@ -52,7 +54,7 @@ struct CarrierInfoView: View {
                 Spacer()
             }
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal)
         .navigationBarBackButtonHidden(true)
 
     }

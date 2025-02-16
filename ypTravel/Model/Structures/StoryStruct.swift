@@ -11,5 +11,6 @@ import UIKit
 struct Story: Hashable, Identifiable {
     var id = UUID()
     var imageName: String
+    var text: String
 }
 

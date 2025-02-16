@@ -14,9 +14,9 @@ struct FindTheRouteView: View {
     @State private var fromPlace: String = ""
     @State private var toPlace: String = ""
     @State private var goToRouteCarrier: Bool = false
+    @Binding var tabBarIsHidden: Bool
     
     let rows = [GridItem(.flexible())]
-//    var isFrom: Bool
     
     var body: some View {
         NavigationStack(path: $navigationArray.path) {
@@ -27,19 +27,22 @@ struct FindTheRouteView: View {
                             StoriesCellView(story: story)
                         }
                     }
+                    .padding(.horizontal, 20)
                 }
                 
                 VStack(spacing: 16) {
                     ZStack {
                         HStack(spacing: 16) {
                             VStack(alignment: .leading, spacing: 0) {
-                                    FromToButton(fromTo: "", buttonPlaceholder: "Откуда", isUp: true) {
-                                        navigationArray.push(.cityView(true))
-                                    }
-                                   
-                                    FromToButton(fromTo: "", buttonPlaceholder: "Куда", isUp: false) {
-                                        navigationArray.push(.cityView(false))
-                                    }
+                                FromToButton(fromTo: fromPlace, buttonPlaceholder: "Откуда", isUp: true) {
+                                    navigationArray.push(.cityView(true))
+                                    tabBarIsHidden = true
+                                }
+                                
+                                FromToButton(fromTo: toPlace, buttonPlaceholder: "Куда", isUp: false) {
+                                    navigationArray.push(.cityView(false))
+                                    tabBarIsHidden = true
+                                }
                             }
                             .background(.ypWhite)
                             .cornerRadius(20)
@@ -55,20 +58,23 @@ struct FindTheRouteView: View {
                     .background(.ypBlue)
                     .cornerRadius(20)
                     .padding(.horizontal, 16)
-                    FindRouteButton(isActive: !fromPlace.isEmpty && !toPlace.isEmpty) {
-                       goToRouteCarrier = true
+                    .onAppear {
+                        tabBarIsHidden = false
                     }
                     
+                    FindRouteButton(isActive: !fromPlace.isEmpty && !toPlace.isEmpty) {
+                       goToRouteCarrier = true
+                       tabBarIsHidden = true
+                    }
                 }
                 .navigationDestination(for: ListOfView.self) { viewList in
-                    Router.destination(for: viewList)
+                    Router.destination(for: viewList, fromPlace: $fromPlace, toPlace: $toPlace)
                 }
                 .navigationDestination(isPresented: $goToRouteCarrier) {
-                    CarrierListView(from: "Moscow", to: "Санкт-Петербург")
+                    CarrierListView(from: fromPlace, to: toPlace, isFiltered: false)
                 }
-                Spacer()
             }
-            
+            Spacer(minLength: 273)
         }
         .environmentObject(navigationArray)
     }
@@ -76,5 +82,5 @@ struct FindTheRouteView: View {
 
 
 #Preview {
-    FindTheRouteView()
+    FindTheRouteView(tabBarIsHidden: .constant(false))
 }

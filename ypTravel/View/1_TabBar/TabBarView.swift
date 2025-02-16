@@ -8,22 +8,27 @@
 import SwiftUI
 
 struct TabBarView: View {
+    
+    @State private var tabBarIsHidden = false
+    @State private var tagIndex = 0
+    
     var body: some View {
-                TabView {
-                    FindTheRouteView()
+        
+        TabView {
+                FindTheRouteView(tabBarIsHidden: $tabBarIsHidden)
                     .tabItem {
                         Image("TabBarOne")
                             .renderingMode(.template)
                     }
-                    PropertiesView()
+                    .toolbar(tabBarIsHidden ? .hidden : .visible, for: .tabBar)
+                PropertiesView(tabBarIsHidden: $tabBarIsHidden)
                     .tabItem {
                         Image("TabBarSecond")
                             .renderingMode(.template)
                     }
-                }
-                .accentColor(.ypBlack)
-        
-        
+                    .toolbar(tabBarIsHidden ? .hidden : .visible, for: .tabBar)
+        }
+        .accentColor(.ypBlack)
     }
 }
 

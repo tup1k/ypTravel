@@ -21,8 +21,8 @@ struct FindRouteButton: View {
         .background(Color.ypBlue)
         .frame(maxWidth: 150, maxHeight: 60)
         .cornerRadius(16)
-//        .disabled(!isActive)
-//        .opacity(isActive ? 1 : 0)
+        .disabled(!isActive)
+        .opacity(isActive ? 1 : 0)
     }
 }
 
