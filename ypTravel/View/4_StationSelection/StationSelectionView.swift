@@ -46,9 +46,14 @@ struct StationSelectionView: View {
                 .padding(.bottom)
             
             if stationArray.isEmpty {
-                Spacer()
-                Text("Станция не найдена")
-                    .font(.system(size: 24, weight: .bold))
+                if stationArray.isEmpty && searchText.isEmpty {
+                    InternetErrorView()
+                } else {
+                    Spacer()
+                    Text("Станция не найдена")
+                        .font(.system(size: 24, weight: .bold))
+                    Spacer()
+                }
             } else {
                 List(stationArray) { station in
                     Button {
@@ -57,6 +62,8 @@ struct StationSelectionView: View {
                     } label: {
                         HStack {
                             Text(station.name)
+                                .padding(.bottom)
+                                .font(.system(size: 17))
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.ypBlack)
@@ -66,7 +73,6 @@ struct StationSelectionView: View {
                 }
                 .listStyle(.inset)
             }
-            Spacer()
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -76,6 +82,13 @@ struct StationSelectionView: View {
 #Preview {
     NavigationStack {
         StationSelectionView(selectedStation: .constant("123"), selectedCity: "Moscow", selectedCityStations: [Station(name: "123"), Station(name: "234")], isFrom: true)
+            .environmentObject(NavigationModel())
+    }
+}
+
+#Preview("InternetError") {
+    NavigationStack {
+        StationSelectionView(selectedStation: .constant(""), selectedCity: "", selectedCityStations: [], isFrom: true)
             .environmentObject(NavigationModel())
     }
 }

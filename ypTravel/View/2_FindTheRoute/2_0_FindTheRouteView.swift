@@ -44,7 +44,7 @@ struct FindTheRouteView: View {
                                     tabBarIsHidden = true
                                 }
                             }
-                            .background(.ypWhite)
+                            .background(.ypWhiteUniversal)
                             .cornerRadius(20)
                             
                             Button(action: {swap(&fromPlace, &toPlace)}) {

@@ -14,7 +14,7 @@ struct FindRouteButton: View {
         Button(action: action) {
             Text("Найти")
                 .font(.system(size: 17, weight: .bold))
-                .foregroundColor(.ypWhite)
+                .foregroundColor(.ypWhiteUniversal)
                 .frame(maxWidth: 150, maxHeight: 60)
         }
         .buttonStyle(.bordered)

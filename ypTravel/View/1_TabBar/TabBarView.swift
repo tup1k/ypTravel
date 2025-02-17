@@ -15,18 +15,18 @@ struct TabBarView: View {
     var body: some View {
         
         TabView {
-                FindTheRouteView(tabBarIsHidden: $tabBarIsHidden)
-                    .tabItem {
-                        Image("TabBarOne")
-                            .renderingMode(.template)
-                    }
-                    .toolbar(tabBarIsHidden ? .hidden : .visible, for: .tabBar)
-                PropertiesView(tabBarIsHidden: $tabBarIsHidden)
-                    .tabItem {
-                        Image("TabBarSecond")
-                            .renderingMode(.template)
-                    }
-                    .toolbar(tabBarIsHidden ? .hidden : .visible, for: .tabBar)
+                    FindTheRouteView(tabBarIsHidden: $tabBarIsHidden)
+                        .tabItem {
+                            Image("TabBarOne")
+                                .renderingMode(.template)
+                        }
+                        .toolbar(tabBarIsHidden ? .hidden : .visible, for: .tabBar)
+                    PropertiesView(tabBarIsHidden: $tabBarIsHidden)
+                        .tabItem {
+                            Image("TabBarSecond")
+                                .renderingMode(.template)
+                        }
+                        .toolbar(tabBarIsHidden ? .hidden : .visible, for: .tabBar)
         }
         .accentColor(.ypBlack)
     }

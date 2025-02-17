@@ -33,7 +33,7 @@ struct CarrierListView: View {
                 
                 Text("\(from) → \(to)")
                     .font(.system(size: 24, weight: .bold, design: .default))
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal)
                     .lineLimit(nil)
                 ScrollView (.vertical, showsIndicators: false) {
                     LazyVGrid(columns: columns) {
@@ -62,7 +62,7 @@ struct CarrierListView: View {
                 .font(.system(size: 17, weight: .bold, design: .default))
                 .frame(width: 343, height: 60)
                 .padding(.horizontal, 16)
-                .foregroundColor(.ypWhite)
+                .foregroundColor(.ypWhiteUniversal)
                 .background(Color.ypBlue)
                 .cornerRadius(16)
                 .navigationDestination(isPresented: $showFilter) {

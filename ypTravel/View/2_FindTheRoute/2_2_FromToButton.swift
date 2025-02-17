@@ -16,7 +16,7 @@ struct FromToButton: View {
     var body: some View {
         Button(action: action) {
             Text(fromTo.isEmpty ? buttonPlaceholder : fromTo)
-                .foregroundColor(fromTo.isEmpty ? .ypGray : .ypBlack)
+                .foregroundColor(fromTo.isEmpty ? .ypGray : .ypBlackUniversal)
                 .font(.system(size: 17, weight: .regular))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: 48)

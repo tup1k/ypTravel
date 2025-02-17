@@ -40,38 +40,40 @@ struct CitySelectionView: View {
             }
             
             SearchBar(searchText: $searchText)
+                .padding(.bottom)
             
             if cityArray.isEmpty {
-                VStack {
-                    Spacer()
-                    Text("Город не найден")
-                        .font(.system(size: 24, weight: .bold))
-                    Spacer()
+                if cityArray.isEmpty && viewModel.cities.isEmpty {
+                    ServerErrorView()
+                } else {
+                    VStack {
+                        Spacer()
+                        Text("Город не найден")
+                            .font(.system(size: 24, weight: .bold))
+                        Spacer()
+                    }
                 }
             } else {
+                
                 List(cityArray) { city in
                     Button {
                         navigationArray.push(.stationView(city.name, city.stations, isFrom))
                     } label: {
                         HStack {
                             Text(city.name)
-                                .frame(height: 60)
+                                .padding(.bottom)
                                 .font(.system(size: 17))
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundColor(.ypBlack)
                         }
-                        .padding(.vertical)
                     }
                     .listRowSeparator(.hidden)
-                    .buttonStyle(.bordered)
                 }
-                .listStyle(.plain)
-                
+                .listStyle(.inset)
             }
         }
         .navigationBarBackButtonHidden(true)
-        
     }
 }
 
@@ -80,4 +82,14 @@ struct CitySelectionView: View {
         CitySelectionView(isFrom: true)
             .environmentObject(NavigationModel())
     }
+}
+
+#Preview("ServerError") {
+    let viewModel = CityViewModel()
+    viewModel.cities = []
+    
+    return CitySelectionView(viewModel: viewModel , isFrom: true)
+            .environmentObject(NavigationModel())
+            .environmentObject(viewModel)
+    
 }
