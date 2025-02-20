@@ -5,10 +5,9 @@
 //  Created by Олег Кор on 09.02.2025.
 //
 
-import UIKit
-import SwiftUICore
+import Foundation
 
-class StationViewModel: ObservableObject {
+final class StationViewModel: ObservableObject {
     @Published var moscowStation: [Station] = []
     @Published var spbStation: [Station] = []
     @Published var sochiStation: [Station] = []

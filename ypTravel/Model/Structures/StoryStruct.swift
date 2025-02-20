@@ -5,12 +5,11 @@
 //  Created by Олег Кор on 04.02.2025.
 //
 
-import SwiftUI
-import UIKit
+import Foundation
 
 struct Story: Hashable, Identifiable {
-    var id = UUID()
-    var imageName: String
-    var text: String
+    let id = UUID()
+    let imageName: String
+    let text: String
 }
 

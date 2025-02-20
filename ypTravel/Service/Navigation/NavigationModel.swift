@@ -15,7 +15,7 @@ enum ListOfView: Hashable {
 //    case carrierInfoView
 }
 
-class NavigationModel: ObservableObject {
+final class NavigationModel: ObservableObject {
     @Published var path = NavigationPath()
     
     func push(_ actualView: ListOfView) {

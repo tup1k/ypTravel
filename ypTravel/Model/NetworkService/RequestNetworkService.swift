@@ -14,14 +14,14 @@ typealias StationInfo = Components.Schemas.AllStationsResponse
 typealias CopyrightInfo = Components.Schemas.CopyrightResponse
 
 protocol ypTravelNetworkServiceProtocol {
-    func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations
-    func getScheduleBetweenStations(from: String, to: String) async throws -> TwoStationSchedule
-    func getStationSchedule(station: String) async throws -> OneStationSchedule
-    func getRouteStations(uid: String) async throws -> StationsOnTheRoute
-    func getNearestCity(lat: Double, lng: Double) async throws -> NearestSettlementInfo
-    func getCarrierInfo(code: String) async throws -> CarrierInfo
-    func getAllStations() async throws -> StationInfo
-    func getCopyright() async throws -> CopyrightInfo
+    func GetNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations
+    func GetScheduleBetweenStations(from: String, to: String) async throws -> TwoStationSchedule
+    func GetStationSchedule(station: String) async throws -> OneStationSchedule
+    func GetRouteStations(uid: String) async throws -> StationsOnTheRoute
+    func GetNearestCity(lat: Double, lng: Double) async throws -> NearestSettlementInfo
+    func GetCarrierInfo(code: String) async throws -> CarrierInfo
+    func GetAllStations() async throws -> StationInfo
+    func GetCopyright() async throws -> CopyrightInfo
 }
 
 final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
@@ -34,7 +34,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
     /// Расписание рейсов между станциями
-    func getScheduleBetweenStations(from: String, to: String) async throws -> TwoStationSchedule {
+    func GetScheduleBetweenStations(from: String, to: String) async throws -> TwoStationSchedule {
         let response = try await client.getScheduleBetweenStations(query: .init(
             apikey: apikey,
             from: from,
@@ -46,7 +46,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
     /// Список рейсов у станции
-    func getStationSchedule(station: String) async throws -> OneStationSchedule {
+    func GetStationSchedule(station: String) async throws -> OneStationSchedule {
         let response = try await client.getStationSchedule(query: .init(
             apikey: apikey,
             station: station,
@@ -56,7 +56,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
     /// Список станций на маршруте
-    func getRouteStations(uid: String) async throws -> StationsOnTheRoute {
+    func GetRouteStations(uid: String) async throws -> StationsOnTheRoute {
         let response = try await client.getRouteStations(query: .init(
             apikey: apikey,
             uid: uid
@@ -66,7 +66,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
     /// Список ближайших станций
-    func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
+    func GetNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
         let response = try await client.getNearestStations(query: .init(
             apikey: apikey,
             lat: lat,
@@ -77,7 +77,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
     /// Ближайший город по координатам
-    func getNearestCity(lat: Double, lng: Double) async throws -> NearestSettlementInfo {
+    func GetNearestCity(lat: Double, lng: Double) async throws -> NearestSettlementInfo {
         let response = try await client.getNearestCity(query: .init(
             apikey: apikey,
             lat: lat,
@@ -87,7 +87,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
     /// Информация о перевозчике
-    func getCarrierInfo(code: String) async throws -> CarrierInfo {
+    func GetCarrierInfo(code: String) async throws -> CarrierInfo {
         let response = try await client.getCarrierInfo(query: .init(
             apikey: apikey,
             code: code
@@ -97,7 +97,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
    /// Информация о всех станциях
-    func getAllStations() async throws -> StationInfo {
+    func GetAllStations() async throws -> StationInfo {
         var data = Data()
         
         do {
@@ -118,7 +118,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     }
     
     /// Копирайт Яндекс Расписаний
-    func getCopyright() async throws -> CopyrightInfo {
+    func GetCopyright() async throws -> CopyrightInfo {
         let response = try await client.getCopyright(query: .init(apikey: apikey))
         return try response.ok.body.json
     }

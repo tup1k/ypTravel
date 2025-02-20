@@ -4,9 +4,9 @@
 //
 //  Created by Олег Кор on 16.02.2025.
 //
-import SwiftUI
+import Foundation
 
-class TimeOptionsModel: ObservableObject {
+final class TimeOptionsModel: ObservableObject {
     @Published var timeSlots: [TimeSlot]
     
     init() {

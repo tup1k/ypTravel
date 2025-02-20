@@ -5,11 +5,11 @@
 //  Created by Олег Кор on 16.02.2025.
 //
 
-import SwiftUI
+import Foundation
 
 struct TimeSlot: Hashable, Identifiable {
-    var id = UUID()
-    var timeName: String
-    var starTime: String
-    var endTime: String
+    let id = UUID()
+    let timeName: String
+    let starTime: String
+    let endTime: String
 }

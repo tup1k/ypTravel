@@ -4,9 +4,9 @@
 //
 //  Created by Олег Кор on 04.02.2025.
 //
-import UIKit
+import Foundation
 
-class StoriesViewModel: ObservableObject {
+final class StoriesViewModel: ObservableObject {
     @Published var stories: [Story] = []
     
     init() {

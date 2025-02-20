@@ -4,7 +4,7 @@
 //
 //  Created by Олег Кор on 06.02.2025.
 //
-import SwiftUI
+import Foundation
 
 struct City: Identifiable, Hashable {
     let id = UUID()

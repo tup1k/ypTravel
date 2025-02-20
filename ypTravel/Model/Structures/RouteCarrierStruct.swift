@@ -5,16 +5,15 @@
 //  Created by Олег Кор on 06.02.2025.
 //
 
-import SwiftUI
-import UIKit
+import Foundation
 
 struct RouteCarrierStruct: Hashable, Identifiable {
     let id = UUID()
-    var carrierImage: String
-    var carrierName: String
-    var transferInfo: String
-    var routeDate: String
-    var routeStartTime: String
-    var routeEndTime: String
-    var routeDuration: String
+    let carrierImage: String
+    let carrierName: String
+    let transferInfo: String
+    let routeDate: String
+    let routeStartTime: String
+    let routeEndTime: String
+    let routeDuration: String
 }

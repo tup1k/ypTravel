@@ -55,16 +55,13 @@ struct DataNetworkService: View {
         .padding()
     }
     
-    func confirm() {
-        
-    }
     
     
     /// Метод вывода расписания рейсов между двумя остановками
     private func scheduleBetweenStations() {
         Task {
             do {
-                let schedule = try await service.getScheduleBetweenStations(from: "c146", to: "c213")
+                let schedule = try await service.GetScheduleBetweenStations(from: "c146", to: "c213")
                 print(schedule.self)
             } catch {
                 print(error)
@@ -76,7 +73,7 @@ struct DataNetworkService: View {
     private func stationSchedule() {
         Task {
             do {
-                let schedule = try await service.getStationSchedule(station: "s9600213")
+                let schedule = try await service.GetStationSchedule(station: "s9600213")
                 print(schedule.schedule ?? "No data")
             } catch {
                 print(error)
@@ -88,7 +85,7 @@ struct DataNetworkService: View {
     private func routeStations() {
         Task {
             do {
-                let stations = try await service.getRouteStations(uid: "028S_3_2")
+                let stations = try await service.GetRouteStations(uid: "028S_3_2")
                 print(stations.title ?? "No stations data")
             } catch {
                 print(error.localizedDescription)
@@ -99,7 +96,7 @@ struct DataNetworkService: View {
     /// Метод вывода ближайшей остановки
     private func nearestStations() {
         Task {
-            let stations = try await service.getNearestStations(lat: 55.813902, lng: 37.597299, distance: 5)
+            let stations = try await service.GetNearestStations(lat: 55.813902, lng: 37.597299, distance: 5)
             print(stations.stations ?? "No data")
         }
     }
@@ -107,7 +104,7 @@ struct DataNetworkService: View {
     /// Метод вывода ближайшего города
     private func nearestCity() {
         Task {
-            let settlements = try await service.getNearestCity(lat: 55.813902, lng: 37.597299)
+            let settlements = try await service.GetNearestCity(lat: 55.813902, lng: 37.597299)
             print(settlements.title ?? "No city data")
         }
     }
@@ -115,7 +112,7 @@ struct DataNetworkService: View {
     /// Метод вывода информации о перевозчике
     private func carrierInfo() {
         Task {
-            let carrierInfo = try await service.getCarrierInfo(code: "112")
+            let carrierInfo = try await service.GetCarrierInfo(code: "112")
             print(carrierInfo.carrier ?? "No carrier data")
         }
     }
@@ -123,7 +120,7 @@ struct DataNetworkService: View {
     /// Метод вывода всех доступных остановок
     private func allStations() {
         Task {
-            let stations = try await service.getAllStations()
+            let stations = try await service.GetAllStations()
             for countries in stations.countries! {
                 print(countries.title ?? "No data")
             }
@@ -133,7 +130,7 @@ struct DataNetworkService: View {
     /// Метод вывода копирайтов яндекса
     private func copyrights() {
         Task {
-            let copyrights = try await service.getCopyright()
+            let copyrights = try await service.GetCopyright()
             print(copyrights.copyright ?? "No copyright data")
         }
     }
