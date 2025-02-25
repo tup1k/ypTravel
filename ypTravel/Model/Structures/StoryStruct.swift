@@ -9,7 +9,16 @@ import Foundation
 
 struct Story: Hashable, Identifiable {
     let id = UUID()
-    let imageName: String
+    let image: String
     let text: String
+    var isViewed: Bool
+    let largeStory: [LargeStory]
+}
+
+struct LargeStory: Hashable, Identifiable {
+    let id = UUID()
+    let largeImage: String
+    let title: String
+    let description: String
 }
 

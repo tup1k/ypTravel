@@ -24,9 +24,7 @@ struct FromToButton: View {
                 .truncationMode(.tail)
                 .multilineTextAlignment(.leading)
                 .padding(.horizontal, 16)
-                
         }
-//        .buttonStyle(.bordered)
     }
 }
 

@@ -11,8 +11,12 @@ struct CloseButton: View {
     let action: () -> Void
     
     var body: some View {
-        Button("", systemImage: "close.circle") {
-            action()
+        Button(action: {
+           action()
+        }) {
+           Image("StoriesCloseButton")
+                .resizable()
+                .scaledToFit().frame(width: 30, height: 30)
         }
     }
 }
