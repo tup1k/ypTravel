@@ -7,18 +7,31 @@
 
 import SwiftUI
 
-
 struct FindTheRouteView: View {
     @StateObject private var viewModel = StoriesViewModel()
     @StateObject private var navigationArray = NavigationModel()
     @State private var fromPlace: String = ""
     @State private var toPlace: String = ""
-    @State private var selectedStory: [LargeStory] = []
+    @State private var selectedStory: Story = Story(image: "MokStorie_2", text: "", isViewed: false, largeStory: [])
+    @State private var selectedLargeStory: Int = 0
     @State private var goToStories: Bool = false
     @State private var goToRouteCarrier: Bool = false
     @Binding var tabBarIsHidden: Bool
-    
+   
     let rows = [GridItem(.flexible())]
+    
+    private var isStoryViewed: Binding<Bool> {
+        Binding<Bool> (
+            get: {
+                let storyIndex = viewModel.stories.firstIndex(where: { selectedStory == $0 })
+                return viewModel.stories[storyIndex ?? 0].isViewed
+            },
+            set: {
+                let storyIndex = viewModel.stories.firstIndex(where: { selectedStory == $0 })
+                viewModel.stories[storyIndex ?? 0].isViewed = $0
+            }
+        )
+    }
     
     var body: some View {
         NavigationStack(path: $navigationArray.path) {
@@ -26,11 +39,15 @@ struct FindTheRouteView: View {
                 ScrollView (.horizontal, showsIndicators: false) {
                     LazyHGrid(rows: rows, spacing: 20) {
                         ForEach(viewModel.stories) { story in
-                            StoriesCellView(story: story, action: {
-                                goToStories = true
-                                tabBarIsHidden = true
-                                self.selectedStory = story.largeStory
-                            })
+                            Button {
+                                    self.selectedStory = story
+                                    self.selectedLargeStory = viewModel.stories.firstIndex(where: { selectedStory == $0 }) ?? 0
+                                    goToStories = true
+                                
+                                print("Button: \(selectedLargeStory)")
+                            } label: {
+                                StoriesCellView(storyImage: story.image, storyText: story.text, isViewed: story.isViewed)
+                            }
                         }
                     }
                     .padding(.horizontal, 16)
@@ -64,25 +81,26 @@ struct FindTheRouteView: View {
                     .background(.ypBlue)
                     .cornerRadius(20)
                     .padding(.horizontal, 16)
-                    .onAppear {
-                        tabBarIsHidden = false
-                    }
                     
                     FindRouteButton(isActive: !fromPlace.isEmpty && !toPlace.isEmpty) {
                         goToRouteCarrier = true
                         tabBarIsHidden = true
                     }
                 }
-                .navigationDestination(for: ListOfView.self) { viewList in
-                    Router.destination(for: viewList, fromPlace: $fromPlace, toPlace: $toPlace)
-                }
-                .navigationDestination(isPresented: $goToRouteCarrier) {
-                    CarrierListView(fromPlace: $fromPlace, toPlace: $toPlace)
-                }
-                .navigationDestination(isPresented: $goToStories) {
-                    LargeStoriesView(stories: selectedStory, goToStories: $goToStories, storyIndex: <#T##Int#>, isViewed: <#T##Binding<Bool>#>)
-                }
+                
                 Spacer(minLength: 273)
+            }
+            .onAppear {
+                tabBarIsHidden = false
+            }
+            .navigationDestination(for: ListOfView.self) { viewList in
+                Router.destination(for: viewList, fromPlace: $fromPlace, toPlace: $toPlace)
+            }
+            .navigationDestination(isPresented: $goToRouteCarrier) {
+                CarrierListView(fromPlace: $fromPlace, toPlace: $toPlace)
+            }
+            .fullScreenCover(isPresented: $goToStories, onDismiss: { tabBarIsHidden = false }) {
+                LargeStoriesView(stories: viewModel.stories, storyIndex: selectedLargeStory, isViewed: isStoryViewed, goToStories: $goToStories)
             }
             .background(Color.ypWhite)
         }
@@ -93,4 +111,5 @@ struct FindTheRouteView: View {
 
 #Preview {
     FindTheRouteView(tabBarIsHidden: .constant(false))
+        .environmentObject(NavigationModel())
 }

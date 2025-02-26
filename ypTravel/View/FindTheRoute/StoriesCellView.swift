@@ -10,27 +10,31 @@ import SwiftUI
 struct StoriesCellView: View {
     var imageHeight: Double = 140
     var imageWidth: Double = 92
-    var story: Story
-    let action: () -> Void
+    let storyImage: String
+    let storyText: String
+    let isViewed: Bool
     
     var body: some View {
-        Button(action: action) {
-            ZStack(alignment: .leading) {
-                Image(story.image)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 4).foregroundColor(.ypBlue))
-                Text(story.text)
+        ZStack(alignment: .bottomLeading) {
+                Image(storyImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: imageHeight)
+                Text(storyText)
                     .foregroundStyle(.ypWhiteUniversal)
                     .font(.system(size: 12))
+                    .lineLimit(3)
+                    .padding(.init(top: 0, leading: 8, bottom: 12, trailing: 8))
                     .multilineTextAlignment(.leading)
-                    .frame(width: 76, alignment: .leading)
-                    .padding(.top, 83)
-                    .clipped()
             }
-        }
+            .frame(maxWidth: imageWidth, maxHeight: imageHeight)
+            .background()
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .opacity(isViewed ? 0.5 : 1)
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(lineWidth: 4).foregroundColor(isViewed ? .clear : .ypBlue))
     }
 }
 
 #Preview {
-    StoriesCellView(story: Story(image: "MokStorie_1", text: "Text text text text text text text text text text text text text", isViewed: false, largeStory: [LargeStory(largeImage: "MokStorie_1_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text") ]), action: {})
+    StoriesCellView(storyImage: "MokStorie_1", storyText: "Text text text text text text text text text text text text text", isViewed: false)
 }

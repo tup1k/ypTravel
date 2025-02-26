@@ -18,7 +18,6 @@ struct LargeStoriesView: View {
     @Binding var isViewed: Bool
     
     let stories: [Story]
-    let largeStories: [LargeStory]
     private let configuration: ProgressBarConfiguration
     private var currentLargeStory: LargeStory { stories[storyIndex].largeStory[currentLargeStoryIndex] }
     private var currentLargeStoryIndex: Int { Int(progress * CGFloat(stories[storyIndex].largeStory.count)) }
@@ -30,11 +29,15 @@ struct LargeStoriesView: View {
         self.timer = Self.createTimer(configuration: configuration)
         self._goToStories = goToStories
         self._isViewed = isViewed
+        print("StoryIndex в инициализаторе: \(storyIndex)")
        }
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             StoryView(story: currentLargeStory)
+                .onAppear {
+                    print(currentLargeStory)
+                }
             ProgressBar(numberOfSections: stories[storyIndex].largeStory.count, progress: progress)
                 .padding(.init(top: 28, leading: 12, bottom: 12, trailing: 12))
             CloseButton(action: {goToStories = false; isViewed = true})
@@ -83,17 +86,43 @@ struct LargeStoriesView: View {
     }
     
     private func nextStory() {
-        // Реализуйте самостоятельно
+        let storiesCount = stories.count
+        let largeStoriesCount = stories[storyIndex].largeStory.count
+        let nextLargeStoryIndex = (currentLargeStoryIndex + 1) < largeStoriesCount ? currentLargeStoryIndex + 1 : 0
+        if currentLargeStoryIndex + 1 == largeStoriesCount {
+            storyIndex = storyIndex + 1 >= storiesCount ? 0 : storyIndex + 1
+            progress = 0
+        } else {
+            withAnimation {
+                progress = CGFloat(nextLargeStoryIndex) / CGFloat(largeStoriesCount)
+            }
+        }
     }
     
     private func previousStory() {
-        // Реализуйте самостоятельно
+        let storiesCount = stories.count
+        let largeStoriesCount = stories[storyIndex].largeStory.count
+        let previousLargeStoryIndex = (currentLargeStoryIndex - 1) >= 0 ? currentLargeStoryIndex - 1 : largeStoriesCount - 1
+        if storyIndex == 0 && currentLargeStoryIndex == 0 {
+            return
+        } else if currentLargeStoryIndex == 0 {
+            storyIndex = storyIndex - 1 < storiesCount ? storyIndex - 1 : 0
+        }
+        withAnimation {
+            progress = CGFloat(previousLargeStoryIndex) / CGFloat(largeStoriesCount)
+        }
     }
     
     private func closeStory() {
-        // Реализуйте самостоятельно
+        let storiesCount = stories.count
+        let largeStoriesCount = stories[storyIndex].largeStory.count
+        if storyIndex + 1 != storiesCount {
+            storyIndex = storyIndex + 1 >= storiesCount ? 0 : storyIndex + 1
+        } else if currentLargeStoryIndex == largeStoriesCount - 1 {
+            goToStories = false
+            isViewed = false
+        }
     }
-    
     
     private func resetTimer() {
         cancellable?.cancel()
@@ -104,10 +133,11 @@ struct LargeStoriesView: View {
     private static func createTimer(configuration: ProgressBarConfiguration) -> Timer.TimerPublisher {
         Timer.publish(every: configuration.timerTickInternal, on: .main, in: .common)
     }
-    
 }
 
 #Preview {
-    let stories = [LargeStory(largeImage: "MokStorie_1_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text"), LargeStory(largeImage: "MokStorie_1_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")]
-    LargeStoriesView(stories: stories, goToStories: .constant(true))
+    let largeStory_1_1 = LargeStory(largeImage: "MokStorie_1_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
+    let largeStory_1_2 = LargeStory(largeImage: "MokStorie_1_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
+    let story_1 = Story(image: "MokStorie_1", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_1_1, largeStory_1_2])
+    LargeStoriesView(stories: [story_1], storyIndex: 2, isViewed: .constant(false), goToStories: .constant(true))
 }
