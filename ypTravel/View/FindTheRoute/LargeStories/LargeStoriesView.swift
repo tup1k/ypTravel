@@ -10,34 +10,33 @@ import Combine
 
 struct LargeStoriesView: View {
     @StateObject private var viewModel = StoriesViewModel()
-    @State private var storyIndex: Int
+//    @State private var storyIndex: Int
+    @Binding private var storyIndex: Int
     @State private var progress: CGFloat = 0
     @State private var timer: Timer.TimerPublisher = Timer.publish(every: 5, on: .main, in: .common)
     @State private var cancellable: Cancellable?
     @Binding var goToStories: Bool
     @Binding var isViewed: Bool
     
+    
     let stories: [Story]
     private let configuration: ProgressBarConfiguration
     private var currentLargeStory: LargeStory { stories[storyIndex].largeStory[currentLargeStoryIndex] }
     private var currentLargeStoryIndex: Int { Int(progress * CGFloat(stories[storyIndex].largeStory.count)) }
     
-    init(stories: [Story], storyIndex: Int, isViewed: Binding<Bool>, goToStories: Binding<Bool>) {
+    
+    init(stories: [Story], storyIndex: Binding<Int>, isViewed: Binding<Bool>, goToStories: Binding<Bool>) {
         self.stories = stories
-        self.storyIndex = storyIndex
-        self.configuration = ProgressBarConfiguration(storiesCount: stories[storyIndex].largeStory.count)
+        self._storyIndex = storyIndex
+        self.configuration = ProgressBarConfiguration(storiesCount: stories[storyIndex.wrappedValue].largeStory.count)
         self.timer = Self.createTimer(configuration: configuration)
         self._goToStories = goToStories
         self._isViewed = isViewed
-        print("StoryIndex в инициализаторе: \(storyIndex)")
        }
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             StoryView(story: currentLargeStory)
-                .onAppear {
-                    print(currentLargeStory)
-                }
             ProgressBar(numberOfSections: stories[storyIndex].largeStory.count, progress: progress)
                 .padding(.init(top: 28, leading: 12, bottom: 12, trailing: 12))
             CloseButton(action: {goToStories = false; isViewed = true})
@@ -139,5 +138,5 @@ struct LargeStoriesView: View {
     let largeStory_1_1 = LargeStory(largeImage: "MokStorie_1_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
     let largeStory_1_2 = LargeStory(largeImage: "MokStorie_1_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
     let story_1 = Story(image: "MokStorie_1", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_1_1, largeStory_1_2])
-    LargeStoriesView(stories: [story_1], storyIndex: 2, isViewed: .constant(false), goToStories: .constant(true))
+    LargeStoriesView(stories: [story_1], storyIndex: .constant(2), isViewed: .constant(false), goToStories: .constant(true))
 }

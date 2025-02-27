@@ -38,13 +38,12 @@ struct FindTheRouteView: View {
             VStack(spacing: 20) {
                 ScrollView (.horizontal, showsIndicators: false) {
                     LazyHGrid(rows: rows, spacing: 20) {
-                        ForEach(viewModel.stories) { story in
+                        ForEach(0..<viewModel.stories.count, id: \.self) { index in
+                            let story = viewModel.stories[index]
                             Button {
-                                    self.selectedStory = story
-                                    self.selectedLargeStory = viewModel.stories.firstIndex(where: { selectedStory == $0 }) ?? 0
-                                    goToStories = true
-                                
-                                print("Button: \(selectedLargeStory)")
+                                self.selectedStory = story
+                                self.selectedLargeStory = index
+                                goToStories = true
                             } label: {
                                 StoriesCellView(storyImage: story.image, storyText: story.text, isViewed: story.isViewed)
                             }
@@ -100,11 +99,12 @@ struct FindTheRouteView: View {
                 CarrierListView(fromPlace: $fromPlace, toPlace: $toPlace)
             }
             .fullScreenCover(isPresented: $goToStories, onDismiss: { tabBarIsHidden = false }) {
-                LargeStoriesView(stories: viewModel.stories, storyIndex: selectedLargeStory, isViewed: isStoryViewed, goToStories: $goToStories)
+                LargeStoriesView(stories: viewModel.stories, storyIndex: $selectedLargeStory, isViewed: isStoryViewed, goToStories: $goToStories)
             }
             .background(Color.ypWhite)
         }
         .environmentObject(navigationArray)
+        
     }
 }
 

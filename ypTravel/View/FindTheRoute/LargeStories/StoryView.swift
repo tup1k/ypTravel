@@ -14,6 +14,7 @@ struct StoryView: View {
                 Spacer()
                 Text(story.title)
                     .font(.system(size: 34, weight: .bold))
+                    .lineLimit(2)
                     .foregroundColor(.ypWhiteUniversal)
                 Text(story.description)
                     .font(.system(size: 20, weight: .regular))
