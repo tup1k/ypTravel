@@ -8,15 +8,23 @@
 import Foundation
 import SwiftUI
 
-final class RouteCarrierListViewModel: ObservableObject {
+final class RouteCarrierViewModel: ObservableObject {
     var networkViewModel = DataNetworkService()
     let isoFormatter = ISO8601DateFormatter()
-    @Binding var fromPlaceCode
-    @Binding var toPlaceCode
     var codeOutput: String = "s2006004"
     var codeInput: String = "s9602494"
+   var isShowWithTransfers: Bool?
     
     @Published var carrierList: [RouteCarrierStruct]
+    
+    var carrierArray: [RouteCarrierStruct] {
+        if isShowWithTransfers ?? true == true {
+            return carrierList
+        } else {
+            return carrierList.filter { $0.transferInfo.isEmpty }
+        }
+    }
+    
     
     /// Форматирование времени в ячейке
        private var timeFormatter: DateFormatter = {

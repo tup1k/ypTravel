@@ -1,10 +1,3 @@
-//
-//  CarrierInfoViewModel.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 06.03.2025.
-//
-
 import Foundation
 
 @MainActor

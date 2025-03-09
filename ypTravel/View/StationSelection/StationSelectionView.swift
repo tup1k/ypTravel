@@ -8,24 +8,16 @@
 import SwiftUI
 
 struct StationSelectionView: View {
+    @StateObject private var viewModel: StationViewModel
     @EnvironmentObject var navigationArray: NavigationModel
-    @State private var searchText: String = ""
-    @Binding var selectedStation: String
-//    @State var selectedStationCode: String
+    @Binding var selectedStation: Station
     
-    var selectedCity: String
-//    var selectedCityStations: [Station]
-    var selectedCityStations: [AllStationStruct]
     var isFrom: Bool
     
-    var stationArray: [AllStationStruct] {
-        if searchText.isEmpty {
-            return selectedCityStations
-        } else {
-            return selectedCityStations.filter { station in
-                let stationTitle = station.title?.lowercased() ?? ""
-                return stationTitle.contains(searchText.lowercased()) }
-        }
+    init(stations: [Station], selectedStation: Binding<Station>, isFrom: Bool) {
+        _viewModel = StateObject(wrappedValue: StationViewModel(stations: stations))
+        self._selectedStation = selectedStation
+        self.isFrom = isFrom
     }
     
     var body: some View {
@@ -46,25 +38,24 @@ struct StationSelectionView: View {
             }
             .padding(.horizontal, 10)
             
-            SearchBar(searchText: $searchText)
+            SearchBar(searchText: $viewModel.searchText)
             
-            if stationArray.isEmpty, !searchText.isEmpty {
+            if viewModel.stationArray.isEmpty, !viewModel.searchText.isEmpty {
                 Spacer()
                 Text("Станция не найдена")
                     .font(.system(size: 24, weight: .bold))
                 Spacer()
             } else {
-                if stationArray.isEmpty {
+                if viewModel.stationArray.isEmpty {
                     ErrorView(errorType: ErrorViewModel.internetError)
                 } else {
-                    List(stationArray, id: \.self) { station in
+                    List(viewModel.stationArray, id: \.self) { station in
                         Button {
-                            selectedStation = "\(selectedCity) (\(station.title ?? ""))"
-//                            selectedStationCode = station.codes?.yandex_code ?? ""
+                            selectedStation = station
                             navigationArray.popToRoot()
                         } label: {
                             HStack {
-                                Text(station.title ?? "")
+                                Text(station.name)
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.ypBlack)
@@ -84,20 +75,9 @@ struct StationSelectionView: View {
 }
 
 
-//#Preview {
+//#Preview("InternetError") {
 //    NavigationStack {
-//        StationSelectionView(selectedStation: .constant("123"), selectedCity: "Moscow", selectedCityStations: AllCitiesStruct()
-//                                
-//                                
-//                                
-//                                [Station(name: "123"), Station(name: "234")], isFrom: true)
+//        StationSelectionView(viewModel: <#StationViewModel#>, selectedStation: .constant(""), selectedCity: "", selectedCityStations: [], isFrom: true)
 //            .environmentObject(NavigationModel())
 //    }
 //}
-
-#Preview("InternetError") {
-    NavigationStack {
-        StationSelectionView(selectedStation: .constant(""), selectedCity: "", selectedCityStations: [], isFrom: true)
-            .environmentObject(NavigationModel())
-    }
-}

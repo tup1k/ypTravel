@@ -9,14 +9,14 @@ import SwiftUI
 
 struct Router {
     @ViewBuilder
-    static func destination(for screen: ListOfView, fromPlace: Binding<String>, toPlace: Binding<String>) -> some View {
+    static func destination(for screen: ListOfView, fromPlace: Binding<Station>, toPlace: Binding<Station>) -> some View {
         switch screen {
         case .homeView:
             EmptyView()
         case .cityView(let isFrom):
-            CitySelectionView(isFrom: isFrom)
-        case .stationView(let selectedCity, let selectedCityStations, let isFrom):
-            StationSelectionView(selectedStation: isFrom ? fromPlace : toPlace, selectedCity: selectedCity, selectedCityStations: selectedCityStations, isFrom: isFrom)
+            CitySelectionView(selectedCity: isFrom ? fromPlace : toPlace, isFrom: isFrom)
+        case .stationView(let stations, let selectedCity, let selectedCityStations, let isFrom):
+            StationSelectionView(stations: stations, selectedStation: isFrom ? fromPlace : toPlace, selectedCity: selectedCity, selectedCityStations: selectedCityStations, isFrom: isFrom)
 //        case .routeCarrierView:
 //            CarrierListView(from: "Москва", to: "Санкт-Петербург")
 //        case .filterView:

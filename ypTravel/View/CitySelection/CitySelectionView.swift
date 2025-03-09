@@ -9,19 +9,19 @@ import SwiftUI
 
 struct CitySelectionView: View {
     @EnvironmentObject var navigationArray: NavigationModel
-    @ObservedObject var viewModel = CityViewModel()
-    @State private var searchText: String = ""
+    @StateObject private var viewModel = CityViewModel()
+    @Binding var selectedCity: Station
+//    @State private var searchText: String = ""
     var isFrom: Bool
     
-
-    var cityArray: [AllCitiesStruct] {
-        let filteresCities = searchText.isEmpty ? viewModel.cities : viewModel.cities.filter { city in
-            let cityTitleString = city.title ?? "Нет названия"
-            let cityTitle = cityTitleString.lowercased()
-            return cityTitle.contains(searchText.lowercased())
-        }
-        return filteresCities.sorted {($0.title ?? "Нет названия").localizedCaseInsensitiveCompare($1.title ?? "Нет названия") == .orderedAscending  }
-    }
+//    private var cityArray: [City] {
+//        let filteresCities = searchText.isEmpty ? viewModel.cities : viewModel.cities.filter { city in
+//            let cityTitleString = city.name
+//            let cityTitle = cityTitleString.lowercased()
+//            return cityTitle.contains(searchText.lowercased())
+//        }
+//        return filteresCities.sorted {($0.name).localizedCaseInsensitiveCompare($1.name) == .orderedAscending  }
+//    }
     
     var body: some View {
         VStack(spacing: 10) {
@@ -41,23 +41,23 @@ struct CitySelectionView: View {
                 }
                 .padding(.horizontal, 10)
                 
-                SearchBar(searchText: $searchText)
+            SearchBar(searchText: $viewModel.searchText)
             
-            if cityArray.isEmpty && !searchText.isEmpty {
+            if viewModel.cityArray.isEmpty && !viewModel.searchText.isEmpty {
                 Spacer()
                 Text("Город не найден")
                     .font(.system(size: 24, weight: .bold))
                 Spacer()
             } else {
-                if cityArray.isEmpty {
+                if viewModel.cityArray.isEmpty {
                     ErrorView(errorType: ErrorViewModel.serverError)
                 } else {
-                    List(cityArray, id: \.self) { city in
+                    List(viewModel.cityArray, id: \.self) { city in
                         Button {
-                            navigationArray.push(.stationView(city.title ?? "Нет названия", city.stations ?? [], isFrom))
+                            navigationArray.push(.stationView(city.name, city.stations, isFrom))
                         } label: {
                             HStack {
-                                Text(city.title ?? "Нет названия")
+                                Text(city.name)
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.ypBlack)
@@ -78,18 +78,18 @@ struct CitySelectionView: View {
 
 #Preview {
     NavigationStack {
-        CitySelectionView(isFrom: true)
+        CitySelectionView(selectedCity: .constant(Station(name: "Курский вокзал", code: "")), isFrom: true)
             .environmentObject(NavigationModel())
             .background(.ypWhite)
     }
 }
 
-#Preview("ServerError") {
-    let viewModel = CityViewModel()
-    viewModel.cities = []
-    
-    return CitySelectionView(viewModel: viewModel, isFrom: true)
-            .environmentObject(NavigationModel())
-            .environmentObject(viewModel)
-    
-}
+//#Preview("ServerError") {
+//    let viewModel = CityViewModel()
+//    viewModel.cities = []
+//    
+//    CitySelectionView(selectedCity: .constant(City(name: "Москва", stations: [])), isFrom: true)
+//            .environmentObject(NavigationModel())
+//            .environmentObject(viewModel)
+//    
+//}

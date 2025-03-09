@@ -7,7 +7,9 @@
 
 import Foundation
 
-struct Station: Identifiable, Hashable {
-    let id = UUID()
+struct Station: Hashable {
+//struct Station: Identifiable, Hashable {
+//    let id = UUID()
     let name: String
+    let code: String
 }
