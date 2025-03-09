@@ -13,7 +13,8 @@ struct CarrierListCell: View {
     var body: some View {
         VStack {
             HStack {
-                Image(routeCarrierInfo.carrierImage)
+//                Image(routeCarrierInfo.carrierImage)
+                Image("RZD")
                     .resizable()
                     .frame(width: 38, height: 38)
                 VStack(alignment: .leading) {
@@ -62,7 +63,7 @@ struct CarrierListCell: View {
 }
 
 #Preview {
-    CarrierListCell(routeCarrierInfo: RouteCarrierStruct(carrierImage: "RZD", carrierName: "РЖД", transferInfo: "С пересадкой в Костроме", routeDate: "14 января", routeStartTime: "22:30", routeEndTime: "08:15", routeDuration: "20"))
+    CarrierListCell(routeCarrierInfo: RouteCarrierStruct(carrierImage: "RZD", carrierName: "РЖД", transferInfo: "С пересадкой в Костроме", routeDate: "14 января", routeStartTime: "22:30", routeEndTime: "08:15", routeDuration: "20", carrierCode: "112"))
 }
 
 

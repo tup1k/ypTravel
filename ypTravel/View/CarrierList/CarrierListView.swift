@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct CarrierListView: View {
-    @StateObject private var viewModel = RouteCarrierListViewModel()
+    @ObservedObject private var viewModel = RouteCarrierListViewModel()
     @Environment(\.dismiss) private var dismiss
     @Binding var fromPlace: String
+    @Binding var fromPlaceCode: String
     @Binding var toPlace: String
+    @Binding var toPlaceCode: String
     @State private var showFilter: Bool = false
     @State private var isFiltered: Bool = false
     @State private var isShowWithTransfers: Bool?
@@ -48,6 +50,7 @@ struct CarrierListView: View {
                     .font(.system(size: 24, weight: .bold, design: .default))
                     .padding(.horizontal, 16)
                     .lineLimit(nil)
+                
                 
                 if carrierArray.isEmpty {
                     Spacer()

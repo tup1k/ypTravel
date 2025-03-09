@@ -8,65 +8,32 @@
 import SwiftUI
 import OpenAPIURLSession
 
-struct DataNetworkService: View {
+struct DataNetworkService {
     private let client: Client
     private let service: YPTravelNetworkService
-    
     
     init () {
         do {
             client = Client(serverURL: try Servers.Server1.url(), transport: URLSessionTransport())
             service = YPTravelNetworkService(client: self.client, apikey: Constants.apiKey)
         } catch {
-            fatalError()
+            fatalError("Ошибка при получении URL сервера: \(error.localizedDescription)")
         }
     }
- 
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Button("Вывести расписание рейсов между станциями (scheduleBetweenStations)") {
-                scheduleBetweenStations()
-            }.padding()
-            Button("Вывести список рейсов у станции (stationSchedule)") {
-                stationSchedule()
-            }.padding()
-            Button("Вывести список станций на маршруте (routeStations)") {
-                routeStations()
-            }.padding()
-            Button("Вывести ближайшие станции (nearestStations)") {
-                nearestStations()
-            }.padding()
-            Button("Вывести ближайший город (nearestCity)") {
-                nearestCity()
-            }.padding()
-            Button("Вывести данные о перевозчике на маршруте (carrierInfo)") {
-                carrierInfo()
-            }.padding()
-            Button("Получить данные всех станций (allStations)") {
-                allStations()
-            }.padding()
-            Button("Получить копирайты (copyrights)") {
-                copyrights()
-            }
-        }
-        .padding()
-    }
     
-    
-    
+
     /// Метод вывода расписания рейсов между двумя остановками
-    private func scheduleBetweenStations() {
-        Task {
+    func scheduleBetweenStations(fromStationCode: String, toStationCode: String) async -> TwoStationSchedule {
+//        Task {
             do {
-                let schedule = try await service.GetScheduleBetweenStations(from: "c146", to: "c213")
-                print(schedule.self)
+                let schedule = try await service.GetScheduleBetweenStations(from: fromStationCode, to: toStationCode)
+//                let schedule = try await service.GetScheduleBetweenStations(from: fromStation, to: toStation)
+                return schedule
             } catch {
                 print(error)
+                return TwoStationSchedule(segments: nil)
             }
-        }
+//        }
     }
     
     /// Метод вывода списка рейсов проходящих через остановку
@@ -110,22 +77,36 @@ struct DataNetworkService: View {
     }
     
     /// Метод вывода информации о перевозчике
-    private func carrierInfo() {
-        Task {
-            let carrierInfo = try await service.GetCarrierInfo(code: "112")
-            print(carrierInfo.carrier ?? "No carrier data")
+//    func carrierInfo(code: String) async -> CarrierInfo {
+    func carrierInfo(code: String) async -> CarrierInfoStruct {
+        do {
+            let carrierInfo = try await service.GetCarrierInfo(code: code)
+            
+            let jsonData = try JSONSerialization.data(withJSONObject: carrierInfo.carrier?.value as? [String: Any], options: [])
+            let decoder = JSONDecoder()
+            let carrierResponse = try decoder.decode(CarrierResponseStruct.self, from: jsonData)
+            let carrierList = CarrierInfoStruct(carrierImage: "RZD", carrierName: carrierResponse.title ?? "", carrierMail: carrierResponse.email ?? "", carrierPhone: carrierResponse.phone ?? "")
+            return carrierList
+        } catch {
+            print(error.localizedDescription)
+            return CarrierInfoStruct(carrierImage: "", carrierName: "", carrierMail: "", carrierPhone: "")
         }
     }
     
     /// Метод вывода всех доступных остановок
-    private func allStations() {
-        Task {
-            let stations = try await service.GetAllStations()
-            for countries in stations.countries! {
-                print(countries.title ?? "No data")
+    func allStations() async -> [AllCitiesStruct] {
+//        Task {
+            do {
+                let stations = try await service.GetAllStations()
+                let rusArray = stations.countries?.filter { $0.title == "Россия" }
+                return rusArray?.first?.regions?.flatMap { $0.settlements ?? [] } ?? []
+            } catch {
+                print(error.localizedDescription)
+                return []
             }
-        }
+//        }
     }
+    
     
     /// Метод вывода копирайтов яндекса
     private func copyrights() {
@@ -136,7 +117,3 @@ struct DataNetworkService: View {
     }
 }
     
-
-#Preview {
-    DataNetworkService()
-}

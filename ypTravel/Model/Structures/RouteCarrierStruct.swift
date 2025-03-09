@@ -16,4 +16,5 @@ struct RouteCarrierStruct: Hashable, Identifiable {
     let routeStartTime: String
     let routeEndTime: String
     let routeDuration: String
+    let carrierCode: String
 }

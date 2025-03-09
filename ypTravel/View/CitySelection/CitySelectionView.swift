@@ -9,17 +9,18 @@ import SwiftUI
 
 struct CitySelectionView: View {
     @EnvironmentObject var navigationArray: NavigationModel
-    @StateObject var viewModel = CityViewModel()
+    @ObservedObject var viewModel = CityViewModel()
     @State private var searchText: String = ""
-
     var isFrom: Bool
     
-    var cityArray: [City] {
-        if searchText.isEmpty {
-            return viewModel.cities
-        } else {
-            return viewModel.cities.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+
+    var cityArray: [AllCitiesStruct] {
+        let filteresCities = searchText.isEmpty ? viewModel.cities : viewModel.cities.filter { city in
+            let cityTitleString = city.title ?? "Нет названия"
+            let cityTitle = cityTitleString.lowercased()
+            return cityTitle.contains(searchText.lowercased())
         }
+        return filteresCities.sorted {($0.title ?? "Нет названия").localizedCaseInsensitiveCompare($1.title ?? "Нет названия") == .orderedAscending  }
     }
     
     var body: some View {
@@ -51,12 +52,12 @@ struct CitySelectionView: View {
                 if cityArray.isEmpty {
                     ErrorView(errorType: ErrorViewModel.serverError)
                 } else {
-                    List(cityArray) { city in
+                    List(cityArray, id: \.self) { city in
                         Button {
-                            navigationArray.push(.stationView(city.name, city.stations, isFrom))
+                            navigationArray.push(.stationView(city.title ?? "Нет названия", city.stations ?? [], isFrom))
                         } label: {
                             HStack {
-                                Text(city.name)
+                                Text(city.title ?? "Нет названия")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.ypBlack)

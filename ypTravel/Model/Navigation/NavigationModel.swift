@@ -9,7 +9,8 @@ import SwiftUI
 enum ListOfView: Hashable {
     case homeView
     case cityView(Bool)
-    case stationView(String, [Station], Bool)
+//    case stationView(String, [Station], Bool)
+    case stationView(String, [AllStationStruct], Bool)
 //    case routeCarrierView
 //    case filterView
 //    case carrierInfoView

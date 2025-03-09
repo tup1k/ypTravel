@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct FindTheRouteView: View {
-    @StateObject private var viewModel = StoriesViewModel()
+    
+    var networkViewModel = DataNetworkService()
+    
+    @ObservedObject private var viewModel = StoriesViewModel()
     @StateObject private var navigationArray = NavigationModel()
     @State private var fromPlace: String = ""
     @State private var toPlace: String = ""

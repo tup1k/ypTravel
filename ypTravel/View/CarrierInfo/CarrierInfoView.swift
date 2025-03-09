@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct CarrierInfoView: View {
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var viewModel = CarrierInfoViewModel()
+    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -26,11 +29,18 @@ struct CarrierInfoView: View {
                 Spacer()
             }
             
-            Image("RZDLarge")
+//            if let imageURL = viewModel.carrierList.carrierImage {
+//                KFImage(imageURL)
+//                
+            Image(viewModel.carrierList.carrierImage)
                 .resizable()
                 .scaledToFit()
+                .onAppear {
+                    print(viewModel.carrierList.carrierImage)
+                }
+//            }
             
-            Text("ОАО «РЖД»")
+            Text(viewModel.carrierList.carrierName)
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.ypBlack)
             
@@ -38,7 +48,7 @@ struct CarrierInfoView: View {
                 Text("E-mail")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundColor(.ypBlack)
-                Text(String("i.lozgkina@yandex.ru"))
+                Text(String(viewModel.carrierList.carrierMail))
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.ypBlue)
             }
@@ -48,7 +58,7 @@ struct CarrierInfoView: View {
                 Text("Телефон")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundColor(.ypBlack)
-                Text("+7 (904) 329-27-71")
+                Text(viewModel.carrierList.carrierPhone)
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.ypBlue)
                 Spacer()

@@ -11,16 +11,20 @@ struct StationSelectionView: View {
     @EnvironmentObject var navigationArray: NavigationModel
     @State private var searchText: String = ""
     @Binding var selectedStation: String
+//    @State var selectedStationCode: String
     
     var selectedCity: String
-    var selectedCityStations: [Station]
+//    var selectedCityStations: [Station]
+    var selectedCityStations: [AllStationStruct]
     var isFrom: Bool
     
-    var stationArray: [Station] {
+    var stationArray: [AllStationStruct] {
         if searchText.isEmpty {
             return selectedCityStations
         } else {
-            return selectedCityStations.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            return selectedCityStations.filter { station in
+                let stationTitle = station.title?.lowercased() ?? ""
+                return stationTitle.contains(searchText.lowercased()) }
         }
     }
     
@@ -53,13 +57,14 @@ struct StationSelectionView: View {
                 if stationArray.isEmpty {
                     ErrorView(errorType: ErrorViewModel.internetError)
                 } else {
-                    List(stationArray) { station in
+                    List(stationArray, id: \.self) { station in
                         Button {
-                            selectedStation = "\(selectedCity) (\(station.name))"
+                            selectedStation = "\(selectedCity) (\(station.title ?? ""))"
+//                            selectedStationCode = station.codes?.yandex_code ?? ""
                             navigationArray.popToRoot()
                         } label: {
                             HStack {
-                                Text(station.name)
+                                Text(station.title ?? "")
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.ypBlack)
@@ -79,12 +84,16 @@ struct StationSelectionView: View {
 }
 
 
-#Preview {
-    NavigationStack {
-        StationSelectionView(selectedStation: .constant("123"), selectedCity: "Moscow", selectedCityStations: [Station(name: "123"), Station(name: "234")], isFrom: true)
-            .environmentObject(NavigationModel())
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        StationSelectionView(selectedStation: .constant("123"), selectedCity: "Moscow", selectedCityStations: AllCitiesStruct()
+//                                
+//                                
+//                                
+//                                [Station(name: "123"), Station(name: "234")], isFrom: true)
+//            .environmentObject(NavigationModel())
+//    }
+//}
 
 #Preview("InternetError") {
     NavigationStack {

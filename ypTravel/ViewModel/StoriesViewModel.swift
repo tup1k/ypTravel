@@ -45,5 +45,7 @@ final class StoriesViewModel: ObservableObject {
         
         self.stories = [story_1, story_2, story_3, story_4, story_5, story_6, story_7, story_8, story_9]
     }
+    
+    
 }
 

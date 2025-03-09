@@ -12,6 +12,8 @@ typealias NearestSettlementInfo = Components.Schemas.NearestCityResponse
 typealias CarrierInfo = Components.Schemas.CarrierResponse
 typealias StationInfo = Components.Schemas.AllStationsResponse
 typealias CopyrightInfo = Components.Schemas.CopyrightResponse
+typealias AllCitiesStruct = Components.Schemas.Settlement
+typealias AllStationStruct = Components.Schemas.Station
 
 protocol ypTravelNetworkServiceProtocol {
     func GetNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations
@@ -35,13 +37,18 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
     
     /// Расписание рейсов между станциями
     func GetScheduleBetweenStations(from: String, to: String) async throws -> TwoStationSchedule {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd" // Указываем нужный формат
+        let currentDate = Date()
+        let dateString = dateFormatter.string(from: currentDate)
+
+        
         let response = try await client.getScheduleBetweenStations(query: .init(
             apikey: apikey,
             from: from,
             to: to,
-            date: "2025-01-25"
+            date: "2025-03-08"
         ))
-        print(try response.ok.body.json)
         return try response.ok.body.json
     }
     
@@ -92,7 +99,6 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
             apikey: apikey,
             code: code
         ))
-        print(response)
         return try response.ok.body.json
     }
     
@@ -102,7 +108,6 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         
         do {
             let response = try await client.getAllStations(query: .init(apikey: apikey))
-            print(response)
             
             for try await chunk in try response.ok.body.text_html_charset_utf_hyphen_8 {
                 data.append(contentsOf: chunk)
