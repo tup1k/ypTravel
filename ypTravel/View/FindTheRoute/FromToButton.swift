@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct FromToButton: View {
-    @Binding var fromTo: Station
     let buttonPlaceholder: String
+    let cityName: String
+    let stationName: String
     let isUp: Bool
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            Text(fromTo.name.isEmpty ? buttonPlaceholder : fromTo.name)
-                .foregroundColor(fromTo.name.isEmpty ? .ypGray : .ypBlackUniversal)
+            Text(stationName.isEmpty ? buttonPlaceholder : "\(cityName) (\(stationName)")
+                .foregroundColor(stationName.isEmpty ? .ypGray : .ypBlackUniversal)
                 .font(.system(size: 17, weight: .regular))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .frame(height: 48)
@@ -29,5 +30,5 @@ struct FromToButton: View {
 }
 
 #Preview {
-    FromToButton(fromTo: .constant(Station(name: "", code: "")), buttonPlaceholder: "Откуда", isUp: true) {}
+    FromToButton(buttonPlaceholder: "Откуда", cityName: "", stationName: "", isUp: true) {}
 }

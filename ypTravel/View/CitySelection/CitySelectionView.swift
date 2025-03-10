@@ -10,18 +10,8 @@ import SwiftUI
 struct CitySelectionView: View {
     @EnvironmentObject var navigationArray: NavigationModel
     @StateObject private var viewModel = CityViewModel()
-    @Binding var selectedCity: Station
-//    @State private var searchText: String = ""
+    @Binding var selectedCity: City
     var isFrom: Bool
-    
-//    private var cityArray: [City] {
-//        let filteresCities = searchText.isEmpty ? viewModel.cities : viewModel.cities.filter { city in
-//            let cityTitleString = city.name
-//            let cityTitle = cityTitleString.lowercased()
-//            return cityTitle.contains(searchText.lowercased())
-//        }
-//        return filteresCities.sorted {($0.name).localizedCaseInsensitiveCompare($1.name) == .orderedAscending  }
-//    }
     
     var body: some View {
         VStack(spacing: 10) {
@@ -52,9 +42,10 @@ struct CitySelectionView: View {
                 if viewModel.cityArray.isEmpty {
                     ErrorView(errorType: ErrorViewModel.serverError)
                 } else {
-                    List(viewModel.cityArray, id: \.self) { city in
+                    List(viewModel.cityArray) { city in
                         Button {
-                            navigationArray.push(.stationView(city.name, city.stations, isFrom))
+                            selectedCity = city
+                            navigationArray.push(.stationView(city.stations, isFrom))
                         } label: {
                             HStack {
                                 Text(city.name)
@@ -78,7 +69,7 @@ struct CitySelectionView: View {
 
 #Preview {
     NavigationStack {
-        CitySelectionView(selectedCity: .constant(Station(name: "Курский вокзал", code: "")), isFrom: true)
+        CitySelectionView(selectedCity: .constant(City(name: "Moscow", stations: [Station(name: "Курский вокзал", code: "")])), isFrom: true)
             .environmentObject(NavigationModel())
             .background(.ypWhite)
     }

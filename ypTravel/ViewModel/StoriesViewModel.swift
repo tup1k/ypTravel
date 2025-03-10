@@ -28,5 +28,13 @@ final class StoriesViewModel: ObservableObject {
         )
     }
     
+    
+    func selectStory(story: Story) {
+        if let index = stories.firstIndex(of: story) {
+            selectedStory = story
+            selectedLargeStory = index
+        }
+    }
+    
 }
 

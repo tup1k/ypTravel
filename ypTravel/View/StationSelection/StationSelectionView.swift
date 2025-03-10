@@ -11,7 +11,6 @@ struct StationSelectionView: View {
     @StateObject private var viewModel: StationViewModel
     @EnvironmentObject var navigationArray: NavigationModel
     @Binding var selectedStation: Station
-    
     var isFrom: Bool
     
     init(stations: [Station], selectedStation: Binding<Station>, isFrom: Bool) {

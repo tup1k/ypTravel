@@ -24,13 +24,17 @@ final class CityViewModel: ObservableObject {
    
     func loadCities() async {
         let fetchedCities = await networkViewModel.allStations()
-        for city in fetchedCities {
-            for station in city.stations ?? [] {
-                let oneMoreStation = Station(name: station.title ?? "Название станции отсутствует", code: station.code ?? "")
-                self.newStations.append(oneMoreStation)
+        
+        await MainActor.run {
+            newStations.removeAll()
+            for city in fetchedCities {
+                for station in city.stations ?? [] {
+                    let oneMoreStation = Station(name: station.title ?? "Название станции отсутствует", code: station.code ?? "")
+                    self.newStations.append(oneMoreStation)
+                }
+                let newCity = City(name: city.title ?? "Название города отсутствует", stations: newStations)
+                self.cities.append(newCity)
             }
-            let newCity = City(name: city.title ?? "Название города отсутствует", stations: newStations)
-            self.cities.append(newCity)
         }
         
     }

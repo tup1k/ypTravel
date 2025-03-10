@@ -10,24 +10,12 @@ import SwiftUI
 struct CarrierListView: View {
     @ObservedObject private var viewModel = RouteCarrierViewModel()
     @Environment(\.dismiss) private var dismiss
-//    @Binding var fromPlace: String
-//    @Binding var toPlace: String
-    
     @Binding var fromPlace: Station
     @Binding var toPlace: Station
     
     @State private var showFilter: Bool = false
     @State private var isFiltered: Bool = false
-//    @State private var isShowWithTransfers: Bool?
     let columns = [GridItem(.flexible())]
-//    
-//    var carrierArray: [RouteCarrierStruct] {
-//        if isShowWithTransfers ?? true == true {
-//            return viewModel.carrierList
-//        } else {
-//            return viewModel.carrierList.filter { $0.transferInfo.isEmpty }
-//        }
-//    }
     
     var body: some View {
         ZStack {

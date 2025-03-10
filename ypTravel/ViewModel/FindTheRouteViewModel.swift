@@ -2,11 +2,15 @@ import Foundation
 
 @MainActor
 final class FindTheRouteViewModel: ObservableObject {
-    @Published var fromPlace: Station
-    @Published var toPlace: Station
+    @Published var fromCity: City
+    @Published var fromStation: Station
+    @Published var toCity: City
+    @Published var toStation: Station
     
-    init(fromPlace: Station, toPlace: Station) {
-        self.fromPlace = fromPlace
-        self.toPlace = toPlace
+    init(fromCity: City, toCity: City, fromStation: Station, toStation: Station) {
+        self.fromCity = fromCity
+        self.fromStation = fromStation
+        self.toCity = toCity
+        self.toStation = toStation
     }
 }
