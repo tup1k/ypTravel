@@ -10,6 +10,6 @@ import Foundation
 struct Station: Hashable {
 //struct Station: Identifiable, Hashable {
 //    let id = UUID()
-    let name: String
+    var name: String
     let code: String
 }

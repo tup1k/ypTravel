@@ -23,7 +23,7 @@ struct DataNetworkService {
     
 
     /// Метод вывода расписания рейсов между двумя остановками
-    func scheduleBetweenStations(fromStationCode: String, toStationCode: String) async -> TwoStationSchedule {
+    func scheduleBetweenStations(fromStationCode: String, toStationCode: String) async throws -> TwoStationSchedule {
 //        Task {
             do {
                 let schedule = try await service.GetScheduleBetweenStations(from: fromStationCode, to: toStationCode)

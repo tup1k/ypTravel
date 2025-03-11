@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct CarrierListView: View {
-    @ObservedObject private var viewModel = RouteCarrierViewModel()
+    @StateObject private var viewModel = RouteCarrierViewModel()
     @Environment(\.dismiss) private var dismiss
-    @Binding var fromPlace: Station
-    @Binding var toPlace: Station
+//    @Binding var fromPlace: Station
+//    @Binding var toPlace: Station
+    var fromPlace: Station
+    var toPlace: Station
     
     @State private var showFilter: Bool = false
     @State private var isFiltered: Bool = false
@@ -87,12 +89,17 @@ struct CarrierListView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            Task {
+                try await viewModel.loadRoutes(codeOutput: fromPlace.code, codeInput: toPlace.code)
+            }
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        CarrierListView(fromPlace: .constant(Station(name: "Москва (Курский вокзал)", code: "")), toPlace: .constant(Station(name: "Курск", code: "")))
+        CarrierListView(fromPlace: Station(name: "Москва (Курский вокзал)", code: ""), toPlace: Station(name: "Курск", code: ""))
     }
 }
 

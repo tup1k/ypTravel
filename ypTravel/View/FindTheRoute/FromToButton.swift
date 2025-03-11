@@ -16,7 +16,7 @@ struct FromToButton: View {
     
     var body: some View {
         Button(action: action) {
-            Text(stationName.isEmpty ? buttonPlaceholder : "\(cityName) (\(stationName)")
+            Text(cityName.isEmpty ? buttonPlaceholder : "\(cityName) (\(stationName))")
                 .foregroundColor(stationName.isEmpty ? .ypGray : .ypBlackUniversal)
                 .font(.system(size: 17, weight: .regular))
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -30,5 +30,5 @@ struct FromToButton: View {
 }
 
 #Preview {
-    FromToButton(buttonPlaceholder: "Откуда", cityName: "", stationName: "", isUp: true) {}
+    FromToButton(buttonPlaceholder: "Откуда", cityName: "Москва", stationName: "Курский вокзал", isUp: true) {}
 }

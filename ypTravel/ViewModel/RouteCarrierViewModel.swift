@@ -1,21 +1,14 @@
-//
-//  CarrierViewModel.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 06.02.2025.
-//
-
 import Foundation
 import SwiftUI
 
 final class RouteCarrierViewModel: ObservableObject {
     var networkViewModel = DataNetworkService()
     let isoFormatter = ISO8601DateFormatter()
-    var codeOutput: String = "s2006004"
-    var codeInput: String = "s9602494"
+//    var codeOutput: String = "s2006004"
+//    var codeInput: String = "s9602494"
    var isShowWithTransfers: Bool?
     
-    @Published var carrierList: [RouteCarrierStruct]
+    @Published var carrierList: [RouteCarrierStruct] = []
     
     var carrierArray: [RouteCarrierStruct] {
         if isShowWithTransfers ?? true == true {
@@ -41,11 +34,14 @@ final class RouteCarrierViewModel: ObservableObject {
            return formatter
        }()
     
-    init() {
-        carrierList = []
-        
-        Task {
-            let fetchedRoutes = await networkViewModel.scheduleBetweenStations(fromStationCode: codeOutput, toStationCode: codeInput)
+//    init() {
+//        carrierList = []
+//        
+//      
+//    }
+    
+    func loadRoutes(codeOutput: String, codeInput: String) async throws {
+            let fetchedRoutes = try await networkViewModel.scheduleBetweenStations(fromStationCode: codeOutput, toStationCode: codeInput)
            
                 for segment in fetchedRoutes.segments ?? [] {
                     let start_time = timeFormatter.string(from: isoFormatter.date(from: segment.departure ?? "") ?? Date())
@@ -65,8 +61,8 @@ final class RouteCarrierViewModel: ObservableObject {
                         routeDuration: String(format: "%.f", Double(segment.duration ?? 0) / 3600),
                         carrierCode: String(segment.thread?.carrier?.code ?? 112)
                     )
+                    print(String(segment.thread?.carrier?.code ?? 112))
                     carrierList.append(newRoute)
                 }
-        }
     }
 }
