@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct FindTheRouteView: View {
-//    @EnvironmentObject var navigationArray: NavigationModel
     @StateObject private var navigationArray: NavigationModel = NavigationModel()
     @StateObject private var storiesViewModel = StoriesViewModel()
     @StateObject private var routeViewModel = FindTheRouteViewModel(
@@ -18,7 +17,6 @@ struct FindTheRouteView: View {
         toStation: Station(name: "", code: "")
     )
     
-    
     @State private var goToStories: Bool = false
     @State private var goToRouteCarrier: Bool = false
     @Binding var tabBarIsHidden: Bool
@@ -27,52 +25,59 @@ struct FindTheRouteView: View {
     
     
     var body: some View {
-        NavigationStack(path: $navigationArray.path) {
-            VStack(spacing: 20) {
-                ScrollView (.horizontal, showsIndicators: false) {
-                    LazyHGrid(rows: rows, spacing: 20) {
-                        ForEach(storiesViewModel.stories) { story in
-                            Button {
-                                storiesViewModel.selectStory(story: story)
-                                goToStories = true
-                            } label: {
-                                StoriesCellView(storyImage: story.image, storyText: story.text, isViewed: story.isViewed)
+        ZStack {
+            NavigationStack(path: $navigationArray.path) {
+                VStack(spacing: 20) {
+                    ScrollView (.horizontal, showsIndicators: false) {
+                        LazyHGrid(rows: rows, spacing: 20) {
+                            ForEach(storiesViewModel.stories) { story in
+                                Button {
+                                    storiesViewModel.selectStory(story: story)
+                                    goToStories = true
+                                } label: {
+                                    StoriesCellView(storyImage: story.image, storyText: story.text, isViewed: story.isViewed)
+                                }
                             }
                         }
+                        .padding(.horizontal, 16)
                     }
-                    .padding(.horizontal, 16)
-                }
-                
-                VStack(spacing: 16) {
-                    FindTheRouteTab(fromCity: $routeViewModel.fromCity, fromStation: $routeViewModel.fromStation, toCity: $routeViewModel.toCity, toStation: $routeViewModel.toStation, tabBarIsHidden: $tabBarIsHidden)
+                    
+                    VStack(spacing: 16) {
+                        FindTheRouteTab(fromCity: $routeViewModel.fromCity, fromStation: $routeViewModel.fromStation, toCity: $routeViewModel.toCity, toStation: $routeViewModel.toStation, tabBarIsHidden: $tabBarIsHidden)
                         
-                    
-                    
-                    FindRouteButton(isActive: !routeViewModel.fromStation.name.isEmpty && !routeViewModel.toStation.name.isEmpty) {
-                        goToRouteCarrier = true
-                        tabBarIsHidden = true
+                        FindRouteButton(isActive: !routeViewModel.fromStation.name.isEmpty && !routeViewModel.toStation.name.isEmpty) {
+                            goToRouteCarrier = true
+                            tabBarIsHidden = true
+                        }
+                    }
+                    Spacer(minLength: 273)
+                }
+                .onAppear {
+                    tabBarIsHidden = false
+                    Task {
+                        try await routeViewModel.loadCities()
                     }
                 }
-                Spacer(minLength: 273)
+                .navigationDestination(for: ListOfView.self) { viewList in
+                    Router.destination(for: viewList, fromCity: $routeViewModel.fromCity, fromPlace: $routeViewModel.fromStation, toCity: $routeViewModel.toCity, toPlace: $routeViewModel.toStation)
+                }
+                .navigationDestination(isPresented: $goToRouteCarrier) {
+                    CarrierListView(fromPlace: routeViewModel.fromStation, toPlace: routeViewModel.toStation)
+                }
+                .fullScreenCover(isPresented: $goToStories, onDismiss: { tabBarIsHidden = false }) {
+                    LargeStoriesView(stories: storiesViewModel.stories, storyIndex: $storiesViewModel.selectedLargeStory, isViewed: storiesViewModel.isStoryViewed, goToStories: $goToStories)
+                }
+                .background(Color.ypWhite)
             }
-            .onAppear {
-                tabBarIsHidden = false
-                
-                
+            .environmentObject(navigationArray)
+            if routeViewModel.isLoading {
+                ZStack {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea(.all)
+                    LoadingPlaceholder()
+                }
             }
-            .navigationDestination(for: ListOfView.self) { viewList in
-                Router.destination(for: viewList, fromCity: $routeViewModel.fromCity, fromPlace: $routeViewModel.fromStation, toCity: $routeViewModel.toCity, toPlace: $routeViewModel.toStation)
-            }
-            .navigationDestination(isPresented: $goToRouteCarrier) {
-                CarrierListView(fromPlace: routeViewModel.fromStation, toPlace: routeViewModel.toStation)
-            }
-            .fullScreenCover(isPresented: $goToStories, onDismiss: { tabBarIsHidden = false }) {
-                LargeStoriesView(stories: storiesViewModel.stories, storyIndex: $storiesViewModel.selectedLargeStory, isViewed: storiesViewModel.isStoryViewed, goToStories: $goToStories)
-            }
-            .background(Color.ypWhite)
         }
-        .environmentObject(navigationArray)
-        
     }
 }
 

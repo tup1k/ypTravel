@@ -8,24 +8,40 @@
 import SwiftUI
 
 struct CheckBoxView: View {
-    var timeText: String
-    var isSquare: Bool
-    @Binding var checked: Bool
+    @ObservedObject private var filterViewModel: RouteCarrierViewModel
+    @State private var checked: Bool
+    private var filterText: String
     
-    private var imageName: String {
-        isSquare ? "square" : "circle"
+    init(filterViewModel: RouteCarrierViewModel, filterText: String) {
+        self.filterViewModel = filterViewModel
+        self.filterText = filterText
+        _checked = State(initialValue: filterViewModel.filterArray.contains(filterText))
     }
     
     var body: some View {
         HStack {
-            Text(timeText)
+            Text(filterText)
                 .font(.system(size: 17))
             Spacer()
-            Image(systemName: checked ? "checkmark." + imageName + ".fill" : imageName)
+            Image(systemName: checked ? "checkmark.square.fill" : "square") // исправлено
                 .onTapGesture {
-                    self.checked.toggle()
+                    checked.toggle()
+                    if checked {
+                        filterViewModel.filterArray.append(filterText)
+                    } else {
+                        if let index = filterViewModel.filterArray.firstIndex(of: filterText) {
+                            filterViewModel.filterArray.remove(at: index)
+                        }
+                    }
                 }
         }
         .padding()
+    }
+}
+
+struct CheckBox_Previews: PreviewProvider {
+    static var previews: some View {
+        let viewModel = RouteCarrierViewModel()
+        return CheckBoxView(filterViewModel: viewModel, filterText: "Утро 06:00 - 12:00")
     }
 }

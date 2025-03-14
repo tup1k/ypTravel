@@ -6,10 +6,9 @@
 //
 import Foundation
 
-struct CarrierInfoStruct: Hashable, Identifiable {
+struct CarrierInfoStruct: Hashable, Identifiable, Sendable {
     let id = UUID()
     let carrierImage: String
-//    let carrierImage: URL?
     let carrierName: String
     let carrierMail: String
     let carrierPhone: String

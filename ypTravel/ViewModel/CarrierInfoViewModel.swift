@@ -3,21 +3,19 @@ import Foundation
 @MainActor
 final class CarrierInfoViewModel: ObservableObject {
     var networkViewModel = DataNetworkService()
-    @Published var carrierList: CarrierInfoStruct
+    @Published var carrierInfoList: CarrierInfoStruct = CarrierInfoStruct(carrierImage: "", carrierName: "", carrierMail: "", carrierPhone: "")
     
-    init() {
-        self.carrierList = CarrierInfoStruct(carrierImage: "", carrierName: "", carrierMail: "", carrierPhone: "")
-        fetchCarrierInfo()
-    }
+//    init() {
+//        self.carrierInfoList = CarrierInfoStruct(carrierImage: "", carrierName: "", carrierMail: "", carrierPhone: "")
+//        fetchCarrierInfo()
+//    }
     
-    private func fetchCarrierInfo() {
-            Task {
-                let fetchedCarriers = await networkViewModel.carrierInfo(code: "112")
-                DispatchQueue.main.async {
-                    self.carrierList = fetchedCarriers
-                }
-            }
+    func fetchCarrierInfo(carrierCode: String) async throws {
+        let fetchedCarriers = try await networkViewModel.carrierInfo(code: carrierCode)
+        DispatchQueue.main.async {
+            self.carrierInfoList = fetchedCarriers
         }
+    }
 }
 
 

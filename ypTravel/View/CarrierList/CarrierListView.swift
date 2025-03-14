@@ -10,8 +10,6 @@ import SwiftUI
 struct CarrierListView: View {
     @StateObject private var viewModel = RouteCarrierViewModel()
     @Environment(\.dismiss) private var dismiss
-//    @Binding var fromPlace: Station
-//    @Binding var toPlace: Station
     var fromPlace: Station
     var toPlace: Station
     
@@ -49,13 +47,15 @@ struct CarrierListView: View {
                     Text("Вариантов нет")
                         .font(.system(size: 24, weight: .bold))
                     Spacer()
+                } else if viewModel.carrierArray.isEmpty && viewModel.isLoading {
+                    LoadingPlaceholder()
                 } else {
                     ScrollView (showsIndicators: false) {
                         LazyVGrid(columns: columns) {
                             ForEach(viewModel.carrierArray) { routeCarrierInfo in
-                                NavigationLink(destination: CarrierInfoView()) {
-                                        CarrierListCell(routeCarrierInfo: routeCarrierInfo)
-                                    }
+                                NavigationLink(destination: CarrierInfoView(routeCarrierInfo: routeCarrierInfo)) {
+                                    CarrierListCell(routeCarrierInfo: routeCarrierInfo)
+                                }
                             }
                         }
                     }
@@ -84,7 +84,7 @@ struct CarrierListView: View {
                 .background(Color.ypBlue)
                 .cornerRadius(16)
                 .navigationDestination(isPresented: $showFilter) {
-                    RouteTimeSelectionView(isShowWithTransfers: Binding(projectedValue: $viewModel.isShowWithTransfers), isFiltered: $isFiltered)
+                    RouteTimeSelectionView(filterViewModel: viewModel, isFiltered: $isFiltered)
                 }
             }
         }

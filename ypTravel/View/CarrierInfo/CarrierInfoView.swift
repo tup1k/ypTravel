@@ -11,7 +11,7 @@ import Kingfisher
 struct CarrierInfoView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var viewModel = CarrierInfoViewModel()
-    
+    var routeCarrierInfo: RouteCarrierStruct
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -29,18 +29,27 @@ struct CarrierInfoView: View {
                 Spacer()
             }
             
-//            if let imageURL = viewModel.carrierList.carrierImage {
-//                KFImage(imageURL)
-//                
-            Image(viewModel.carrierList.carrierImage)
-                .resizable()
-                .scaledToFit()
-                .onAppear {
-                    print(viewModel.carrierList.carrierImage)
+            KFImage(URL(string: routeCarrierInfo.carrierImage))
+                .placeholder {
+                    Text("Логотип перевозчика отсутствует")
+                        .frame(width: 343, height: 104)
                 }
+                .resizable()
+                .frame(alignment: .center)
+                .scaledToFit()
+                .padding(.horizontal, 16)
+                    
+//            AsyncImage(url: URL(string: routeCarrierInfo.carrierImage)) { image in
+////                image.resizable()
+//                image.scaledToFill()
+//                .frame(width: 343, height: 104)
+//                .cornerRadius(24)
+//            } placeholder: {
+//                Text("Логотип перевозчика отсутствует")
+//                    .frame(width: 343, height: 104)
 //            }
-            
-            Text(viewModel.carrierList.carrierName)
+
+            Text(routeCarrierInfo.carrierName)
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.ypBlack)
             
@@ -48,7 +57,7 @@ struct CarrierInfoView: View {
                 Text("E-mail")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundColor(.ypBlack)
-                Text(String(viewModel.carrierList.carrierMail))
+                Text(String(routeCarrierInfo.carrierMail))
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.ypBlue)
             }
@@ -58,7 +67,7 @@ struct CarrierInfoView: View {
                 Text("Телефон")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundColor(.ypBlack)
-                Text(viewModel.carrierList.carrierPhone)
+                Text(routeCarrierInfo.carrierPhone)
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.ypBlue)
                 Spacer()
@@ -71,5 +80,5 @@ struct CarrierInfoView: View {
 }
 
 #Preview {
-    CarrierInfoView()
+    CarrierInfoView(routeCarrierInfo: RouteCarrierStruct(carrierImage: "https://yastat.net/s3/rasp/media/data/company/logo/logo.gif", carrierName: "РЖД", transferInfo: true, routeDate: "", routeStartTime: "", routeEndTime: "", routeDuration: "", carrierCode: "112", carrierMail: "rzd@rzd.ru", carrierPhone: "+79261234567"))
 }

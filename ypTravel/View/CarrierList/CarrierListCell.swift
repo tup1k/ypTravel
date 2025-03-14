@@ -13,15 +13,19 @@ struct CarrierListCell: View {
     var body: some View {
         VStack {
             HStack {
-//                Image(routeCarrierInfo.carrierImage)
-                Image("RZD")
-                    .resizable()
+                AsyncImage(url: URL(string: routeCarrierInfo.carrierImage)) { image in
+                    image.resizable()
                     .frame(width: 38, height: 38)
+                    .cornerRadius(12)
+                } placeholder: {
+                    ProgressView()
+                }
+                    
                 VStack(alignment: .leading) {
                     Text(routeCarrierInfo.carrierName)
                         .foregroundStyle(.ypBlackUniversal)
                         .font(.system(size: 17, weight: .regular, design: .default))
-                    Text(routeCarrierInfo.transferInfo)
+                    Text(routeCarrierInfo.transferInfo ? "С пересадками" : "Без пересадок")
                         .font(.system(size: 12, weight: .regular, design: .default))
                         .foregroundColor(Color.ypRed)
                 }
@@ -63,7 +67,7 @@ struct CarrierListCell: View {
 }
 
 #Preview {
-    CarrierListCell(routeCarrierInfo: RouteCarrierStruct(carrierImage: "RZD", carrierName: "РЖД", transferInfo: "С пересадкой в Костроме", routeDate: "14 января", routeStartTime: "22:30", routeEndTime: "08:15", routeDuration: "20", carrierCode: "112"))
+    CarrierListCell(routeCarrierInfo: RouteCarrierStruct(carrierImage: "RZD", carrierName: "РЖД", transferInfo: true, routeDate: "14 января", routeStartTime: "22:30", routeEndTime: "08:15", routeDuration: "20", carrierCode: "112", carrierMail: "rzd@rzd.ru", carrierPhone: "80123456789"))
 }
 
 
