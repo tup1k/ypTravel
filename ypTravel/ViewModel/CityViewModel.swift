@@ -1,24 +1,54 @@
-//
-//  CityViewModel.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 06.02.2025.
-//
-
 import Foundation
 
+@MainActor
 final class CityViewModel: ObservableObject {
-    @Published var cities: [City] = []
+    @Published var cities: [City] = CommonData.shared.commonCities
+    @Published var searchText: String = ""
+    var networkViewModel = DataNetworkService()
+    private var newStations: [Station] = []
+    private var cityName: String = ""
     
-    init() {
-        let moscow = City(name: "Москва", stations: [Station(name: "Ленинградский вокзал"), Station(name: "Казанский вокзал"), Station(name: "Киевский вокзал"), Station(name: "Савеловский вокзал"), Station(name: "Белорусский вокзал"), Station(name: "Ярославский вокзал")])
-        let spb = City(name: "Санкт Петербург", stations: [Station(name: "Московский вокзал"), Station(name: "Финляндский вокзал"), Station(name: "Ладожский вокзал"), Station(name: "Витебский вокзал"), Station(name: "Балтийский вокзал")])
-        let sochi = City(name: "Сочи", stations: [Station(name: "Вокзал Сочи")])
-        let gv = City(name: "Горный воздух", stations: [Station(name: "Станция Горный Воздух")])
-        let krasnodar = City(name: "Краснодар", stations: [Station(name: "Вокзал Краснодара")])
-        let kazan = City(name: "Казань", stations: [Station(name: "Вокзал Казани")])
-        let omsk = City(name: "Омск", stations: [Station(name: "Вокзал Омска")])
-        
-        self.cities = [moscow, spb, sochi, gv, krasnodar, kazan, omsk]
+    var cityArray: [City] {
+        let filteresCities = searchText.isEmpty ? cities : cities.filter { city in
+            let cityTitleString = city.name
+            let cityTitle = cityTitleString.lowercased()
+            return cityTitle.contains(searchText.lowercased())
+        }
+        return filteresCities.sorted {($0.name).localizedCaseInsensitiveCompare($1.name) == .orderedAscending  }
     }
+    
+//    init() {
+//        Task {
+//            await loadCities()
+//        }
+//    }
+   
+//    func loadCities() async throws {
+//        
+//        do {
+//            let fetchedCities = try await networkViewModel.allStations()
+//            
+//            for city in fetchedCities {
+//                for station in city.stations ?? [] {
+//                    let oneMoreStation = Station(name: station.title ?? "Название станции отсутствует", code: station.codes?.yandex_code ?? "")
+//                    self.newStations.append(oneMoreStation)
+//                }
+//                if city.title == nil || city.title == "" {
+//                    cityName = "Название города отсутствует"
+//                } else {
+//                    cityName = city.title ?? "Название города отсутствует"
+//                }
+//                let newCity = City(name: cityName, stations: newStations)
+//                self.cities.append(newCity)
+//                newStations.removeAll()
+//            }
+//            
+//            CommonData.shared.commonCities = cities
+//            
+//        } catch {
+//            print(error.localizedDescription)
+//            throw error
+//        }
+//        
+//    }
 }

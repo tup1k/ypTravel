@@ -12,6 +12,8 @@ typealias NearestSettlementInfo = Components.Schemas.NearestCityResponse
 typealias CarrierInfo = Components.Schemas.CarrierResponse
 typealias StationInfo = Components.Schemas.AllStationsResponse
 typealias CopyrightInfo = Components.Schemas.CopyrightResponse
+typealias AllCitiesStruct = Components.Schemas.Settlement
+typealias AllStationStruct = Components.Schemas.Station
 
 protocol ypTravelNetworkServiceProtocol {
     func GetNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations
@@ -33,19 +35,23 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         self.apikey = apikey
     }
     
-    /// Расписание рейсов между станциями
+    // MARK: Расписание рейсов между станциями
     func GetScheduleBetweenStations(from: String, to: String) async throws -> TwoStationSchedule {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd" // Указываем нужный формат
+        let dateString = dateFormatter.string(from: Date())
+
         let response = try await client.getScheduleBetweenStations(query: .init(
             apikey: apikey,
             from: from,
             to: to,
-            date: "2025-01-25"
+            date: dateString,
+            transfers: true
         ))
-        print(try response.ok.body.json)
         return try response.ok.body.json
     }
     
-    /// Список рейсов у станции
+    // MARK: Список рейсов у станции
     func GetStationSchedule(station: String) async throws -> OneStationSchedule {
         let response = try await client.getStationSchedule(query: .init(
             apikey: apikey,
@@ -55,7 +61,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         return try response.ok.body.json
     }
     
-    /// Список станций на маршруте
+    // MARK: Список станций на маршруте
     func GetRouteStations(uid: String) async throws -> StationsOnTheRoute {
         let response = try await client.getRouteStations(query: .init(
             apikey: apikey,
@@ -65,7 +71,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         return try response.ok.body.json
     }
     
-    /// Список ближайших станций
+    // MARK: Список ближайших станций
     func GetNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
         let response = try await client.getNearestStations(query: .init(
             apikey: apikey,
@@ -76,7 +82,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         return try response.ok.body.json
     }
     
-    /// Ближайший город по координатам
+    // MARK: Ближайший город по координатам
     func GetNearestCity(lat: Double, lng: Double) async throws -> NearestSettlementInfo {
         let response = try await client.getNearestCity(query: .init(
             apikey: apikey,
@@ -86,23 +92,21 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         return try response.ok.body.json
     }
     
-    /// Информация о перевозчике
+    // MARK: Информация о перевозчике
     func GetCarrierInfo(code: String) async throws -> CarrierInfo {
         let response = try await client.getCarrierInfo(query: .init(
             apikey: apikey,
             code: code
         ))
-        print(response)
         return try response.ok.body.json
     }
     
-   /// Информация о всех станциях
+    // MARK: Информация о всех станциях
     func GetAllStations() async throws -> StationInfo {
         var data = Data()
         
         do {
             let response = try await client.getAllStations(query: .init(apikey: apikey))
-            print(response)
             
             for try await chunk in try response.ok.body.text_html_charset_utf_hyphen_8 {
                 data.append(contentsOf: chunk)
@@ -117,7 +121,7 @@ final class YPTravelNetworkService: ypTravelNetworkServiceProtocol {
         }
     }
     
-    /// Копирайт Яндекс Расписаний
+    // MARK:  Копирайт Яндекс Расписаний
     func GetCopyright() async throws -> CopyrightInfo {
         let response = try await client.getCopyright(query: .init(apikey: apikey))
         return try response.ok.body.json

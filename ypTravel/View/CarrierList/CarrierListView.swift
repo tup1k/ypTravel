@@ -8,22 +8,14 @@
 import SwiftUI
 
 struct CarrierListView: View {
-    @StateObject private var viewModel = RouteCarrierListViewModel()
+    @StateObject private var viewModel = RouteCarrierViewModel()
     @Environment(\.dismiss) private var dismiss
-    @Binding var fromPlace: String
-    @Binding var toPlace: String
+    var fromPlace: Station
+    var toPlace: Station
+    
     @State private var showFilter: Bool = false
     @State private var isFiltered: Bool = false
-    @State private var isShowWithTransfers: Bool?
     let columns = [GridItem(.flexible())]
-    
-    var carrierArray: [RouteCarrierStruct] {
-        if isShowWithTransfers ?? true == true {
-            return viewModel.carrierList
-        } else {
-            return viewModel.carrierList.filter { $0.transferInfo.isEmpty }
-        }
-    }
     
     var body: some View {
         ZStack {
@@ -43,13 +35,17 @@ struct CarrierListView: View {
                 .padding(.leading, 8)
                 .padding(.vertical, 10)
                 
-                Text("\(fromPlace) → \(toPlace)")
+                Text("\(fromPlace.name) → \(toPlace.name)")
                     .frame(alignment: .leading)
                     .font(.system(size: 24, weight: .bold, design: .default))
                     .padding(.horizontal, 16)
                     .lineLimit(nil)
-                
-                if carrierArray.isEmpty {
+                    
+                if viewModel.isLoading {
+                    Spacer()
+                    LoadingPlaceholder() 
+                    Spacer()
+                } else if viewModel.carrierArray.isEmpty {
                     Spacer()
                     Text("Вариантов нет")
                         .font(.system(size: 24, weight: .bold))
@@ -57,10 +53,10 @@ struct CarrierListView: View {
                 } else {
                     ScrollView (showsIndicators: false) {
                         LazyVGrid(columns: columns) {
-                            ForEach(carrierArray) { routeCarrierInfo in
-                                NavigationLink(destination: CarrierInfoView()) {
-                                        CarrierListCell(routeCarrierInfo: routeCarrierInfo)
-                                    }
+                            ForEach(viewModel.carrierArray) { routeCarrierInfo in
+                                NavigationLink(destination: CarrierInfoView(routeCarrierInfo: routeCarrierInfo)) {
+                                    CarrierListCell(routeCarrierInfo: routeCarrierInfo)
+                                }
                             }
                         }
                     }
@@ -89,17 +85,22 @@ struct CarrierListView: View {
                 .background(Color.ypBlue)
                 .cornerRadius(16)
                 .navigationDestination(isPresented: $showFilter) {
-                    RouteTimeSelectionView(isShowWithTransfers: Binding(projectedValue: $isShowWithTransfers), isFiltered: $isFiltered)
+                    RouteTimeSelectionView(filterViewModel: viewModel, isFiltered: $isFiltered)
                 }
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            Task {
+                try await viewModel.loadRoutes(codeOutput: fromPlace.code, codeInput: toPlace.code)
+            }
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        CarrierListView(fromPlace: .constant("Москва (Ярославский вокзал)"), toPlace: .constant("Санкт Петербург (Балтийский вокзал)"))
+        CarrierListView(fromPlace: Station(name: "Москва (Курский вокзал)", code: ""), toPlace: Station(name: "Курск", code: ""))
     }
 }
 

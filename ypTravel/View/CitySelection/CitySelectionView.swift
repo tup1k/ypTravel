@@ -9,18 +9,9 @@ import SwiftUI
 
 struct CitySelectionView: View {
     @EnvironmentObject var navigationArray: NavigationModel
-    @StateObject var viewModel = CityViewModel()
-    @State private var searchText: String = ""
-
+    @StateObject private var viewModel = CityViewModel()
+    @Binding var selectedCity: City
     var isFrom: Bool
-    
-    var cityArray: [City] {
-        if searchText.isEmpty {
-            return viewModel.cities
-        } else {
-            return viewModel.cities.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        }
-    }
     
     var body: some View {
         VStack(spacing: 10) {
@@ -40,20 +31,21 @@ struct CitySelectionView: View {
                 }
                 .padding(.horizontal, 10)
                 
-                SearchBar(searchText: $searchText)
+            SearchBar(searchText: $viewModel.searchText)
             
-            if cityArray.isEmpty && !searchText.isEmpty {
+            if viewModel.cityArray.isEmpty && !viewModel.searchText.isEmpty {
                 Spacer()
                 Text("Город не найден")
                     .font(.system(size: 24, weight: .bold))
                 Spacer()
             } else {
-                if cityArray.isEmpty {
+                if viewModel.cityArray.isEmpty {
                     ErrorView(errorType: ErrorViewModel.serverError)
                 } else {
-                    List(cityArray) { city in
+                    List(viewModel.cityArray) { city in
                         Button {
-                            navigationArray.push(.stationView(city.name, city.stations, isFrom))
+                            selectedCity = city
+                            navigationArray.push(.stationView(city.stations, isFrom))
                         } label: {
                             HStack {
                                 Text(city.name)
@@ -77,18 +69,18 @@ struct CitySelectionView: View {
 
 #Preview {
     NavigationStack {
-        CitySelectionView(isFrom: true)
+        CitySelectionView(selectedCity: .constant(City(name: "Moscow", stations: [Station(name: "Курский вокзал", code: "")])), isFrom: true)
             .environmentObject(NavigationModel())
             .background(.ypWhite)
     }
 }
 
-#Preview("ServerError") {
-    let viewModel = CityViewModel()
-    viewModel.cities = []
-    
-    return CitySelectionView(viewModel: viewModel, isFrom: true)
-            .environmentObject(NavigationModel())
-            .environmentObject(viewModel)
-    
-}
+//#Preview("ServerError") {
+//    let viewModel = CityViewModel()
+//    viewModel.cities = []
+//    
+//    CitySelectionView(selectedCity: .constant(City(name: "Москва", stations: [])), isFrom: true)
+//            .environmentObject(NavigationModel())
+//            .environmentObject(viewModel)
+//    
+//}

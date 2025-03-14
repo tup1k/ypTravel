@@ -6,8 +6,8 @@
 //
 import Foundation
 
-struct City: Identifiable, Hashable {
+struct City: Identifiable, Hashable, Sendable {
     let id = UUID()
-    let name: String
+    var name: String
     let stations: [Station]
 }

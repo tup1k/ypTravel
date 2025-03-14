@@ -1,49 +1,118 @@
-//
-//  StoriesViewModel.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 04.02.2025.
-//
-import Foundation
+import SwiftUI
+import Combine
 
+@MainActor
 final class StoriesViewModel: ObservableObject {
-    @Published var stories: [Story] = []
     
-    init() {
-        let largeStory_1_1 = LargeStory(largeImage: "MokStorie_1_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_1_2 = LargeStory(largeImage: "MokStorie_1_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_2_1 = LargeStory(largeImage: "MokStorie_2_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_2_2 = LargeStory(largeImage: "MokStorie_2_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_3_1 = LargeStory(largeImage: "MokStorie_3_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_3_2 = LargeStory(largeImage: "MokStorie_3_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_4_1 = LargeStory(largeImage: "MokStorie_4_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_4_2 = LargeStory(largeImage: "MokStorie_4_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_5_1 = LargeStory(largeImage: "MokStorie_5_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_5_2 = LargeStory(largeImage: "MokStorie_5_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_6_1 = LargeStory(largeImage: "MokStorie_6_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_6_2 = LargeStory(largeImage: "MokStorie_6_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_7_1 = LargeStory(largeImage: "MokStorie_7_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_7_2 = LargeStory(largeImage: "MokStorie_7_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_8_1 = LargeStory(largeImage: "MokStorie_8_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_8_2 = LargeStory(largeImage: "MokStorie_8_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_9_1 = LargeStory(largeImage: "MokStorie_9_1", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        let largeStory_9_2 = LargeStory(largeImage: "MokStorie_9_2", title: "🎉 ⭐️ ❤️", description: "Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text Some text")
-        
-        
-        
-        
-        
-        let story_1 = Story(image: "MokStorie_1", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_1_1, largeStory_1_2])
-        let story_2 = Story(image: "MokStorie_2", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_2_1, largeStory_2_2])
-        let story_3 = Story(image: "MokStorie_3", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_3_1, largeStory_3_2])
-        let story_4 = Story(image: "MokStorie_4", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_4_1, largeStory_4_2])
-        let story_5 = Story(image: "MokStorie_5", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_5_1, largeStory_5_2])
-        let story_6 = Story(image: "MokStorie_6", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_6_1, largeStory_6_2])
-        let story_7 = Story(image: "MokStorie_7", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_7_1, largeStory_7_2])
-        let story_8 = Story(image: "MokStorie_8", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_8_1, largeStory_8_2])
-        let story_9 = Story(image: "MokStorie_9", text: "Text text text text text text text", isViewed: false, largeStory: [largeStory_9_1, largeStory_9_2])
-        
-        self.stories = [story_1, story_2, story_3, story_4, story_5, story_6, story_7, story_8, story_9]
+    @Published var storyIndex: Int
+    @Published var progress: CGFloat = 0
+    @Binding var isViewed: Bool
+    @Binding var goToStories: Bool
+    
+    private var stories: [Story] = []
+    private let configuration: ProgressBarConfiguration
+    private var timer: Timer.TimerPublisher = Timer.publish(every: 5, on: .main, in: .common)
+    private var cancellable: Cancellable?
+    
+    private var currentLargeStoryIndex: Int { Int(progress * CGFloat(stories[storyIndex].largeStory.count)) }
+    var currentLargeStory: LargeStory { stories[storyIndex].largeStory[currentLargeStoryIndex] }
+    var numberOfLargeStorySection: Int { stories[storyIndex].largeStory.count }
+    
+    
+    init(stories: [Story], storyIndex: Int, goToStories: Binding<Bool>, isViewed: Binding<Bool>) {
+        self.stories = stories
+        self.storyIndex = storyIndex
+        self._goToStories = goToStories
+        self._isViewed = isViewed
+        self.configuration = ProgressBarConfiguration(storiesCount: stories[storyIndex].largeStory.count)
+        self.timer = Self.createTimer(configuration: configuration)
     }
+    
+    
+    func timerTick() {
+        print("Progress per tick: \(configuration.progressPerTick)")
+        var nextProgress = progress + configuration.progressPerTick
+        if nextProgress >= 1 {
+            closeStory()
+            nextProgress = 0
+        }
+        withAnimation {
+            progress = nextProgress
+        }
+        print("Progress updated: \(progress)") // <-- Проверяем обновление
+    }
+    
+    func timerSend() -> Timer.TimerPublisher {
+        timer
+    }
+    
+    func nextStory() {
+        let storiesCount = stories.count
+        let largeStoriesCount = stories[storyIndex].largeStory.count
+        let nextLargeStoryIndex = (currentLargeStoryIndex + 1) < largeStoriesCount ? currentLargeStoryIndex + 1 : 0
+        if currentLargeStoryIndex + 1 == largeStoriesCount {
+            storyIndex = storyIndex + 1 >= storiesCount ? 0 : storyIndex + 1
+            progress = 0
+        } else {
+            withAnimation {
+                progress = CGFloat(nextLargeStoryIndex) / CGFloat(largeStoriesCount)
+            }
+        }
+    }
+    
+    func previousStory() {
+        let storiesCount = stories.count
+        let largeStoriesCount = stories[storyIndex].largeStory.count
+        let previousLargeStoryIndex = (currentLargeStoryIndex - 1) >= 0 ? currentLargeStoryIndex - 1 : largeStoriesCount - 1
+        if storyIndex == 0 && currentLargeStoryIndex == 0 {
+            return
+        } else if currentLargeStoryIndex == 0 {
+            storyIndex = storyIndex - 1 < storiesCount ? storyIndex - 1 : 0
+        }
+        withAnimation {
+            progress = CGFloat(previousLargeStoryIndex) / CGFloat(largeStoriesCount)
+        }
+    }
+    
+    func closeStory() {
+        let storiesCount = stories.count
+        let largeStoriesCount = stories[storyIndex].largeStory.count
+        if storyIndex + 1 != storiesCount {
+            storyIndex = storyIndex + 1 >= storiesCount ? 0 : storyIndex + 1
+        } else if currentLargeStoryIndex == largeStoriesCount - 1 {
+            goToStories = false
+            isViewed = false
+        }
+    }
+    
+    func startTimer() {
+        print("Starting timer...")
+        timer = Self.createTimer(configuration: configuration)
+//        cancellable = timer.connect()
+        cancellable = timer
+                .autoconnect()  // Это автоматически соединяет таймер с подписчиком
+                .receive(on: DispatchQueue.main)  // Получаем события на главном потоке
+                .sink { [weak self] _ in
+                    print("Timer ticked")
+                    self?.timerTick()
+                }
+    }
+        
+    
+    func stopTimer() {
+        print("Stopping timer...")
+        cancellable?.cancel()
+    }
+    
+    func resetTimer() {
+        print("Resetting timer...")
+        stopTimer()
+        startTimer()
+    }
+    
+     private static func createTimer(configuration: ProgressBarConfiguration) -> Timer.TimerPublisher {
+         Timer.publish(every: configuration.timerTickInternal, on: .main, in: .common)
+    }
+    
 }
 

@@ -1,29 +1,18 @@
-//
-//  RouteTimeSelectionView.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 05.02.2025.
-//
-
 import SwiftUI
 
+
 struct RouteTimeSelectionView: View {
-    
+    @ObservedObject private var filterViewModel: RouteCarrierViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var from6to12timeFilterIsOn = false
-    @State private var from12to18timeFilterIsOn = false
-    @State private var from18to24timeFilterIsOn = false
-    @State private var from24to06timeFilterIsOn = false
-    
-    @State private var selectedDepartureTime: [String] = []
-    @StateObject private var viewModel = TimeOptionsModel()
-    
-    @Binding var isShowWithTransfers: Bool?
     @Binding var isFiltered: Bool
-    @State private var isShowing: Bool = false
+    
+    init(filterViewModel: RouteCarrierViewModel, isFiltered: Binding<Bool>) {
+        self.filterViewModel = filterViewModel
+        self._isFiltered = isFiltered
+    }
     
     var isFilterActive: Bool {
-        return from6to12timeFilterIsOn || from12to18timeFilterIsOn || from18to24timeFilterIsOn || from24to06timeFilterIsOn || isShowWithTransfers != nil
+        return !filterViewModel.filterArray.isEmpty || filterViewModel.isShowWithTransfers != nil
     }
     
     var body: some View {
@@ -31,6 +20,7 @@ struct RouteTimeSelectionView: View {
             HStack {
                 Button(action: {
                     dismiss()
+                    isFiltered = isFilterActive
                 }) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.ypBlack)
@@ -46,10 +36,10 @@ struct RouteTimeSelectionView: View {
                 .font(.system(size: 24))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            CheckBoxView(timeText: "Утро 06:00 - 12:00", isSquare: true, checked: $from6to12timeFilterIsOn)
-            CheckBoxView(timeText: "День 12:00 - 18:00", isSquare: true, checked: $from12to18timeFilterIsOn)
-            CheckBoxView(timeText: "Вечер 18:00 - 10:00", isSquare: true, checked: $from18to24timeFilterIsOn)
-            CheckBoxView(timeText: "Ночь 00:00 - 06:00", isSquare: true, checked: $from24to06timeFilterIsOn)
+            CheckBoxView(filterViewModel: filterViewModel, filterText: "Утро 06:00 - 12:00")
+            CheckBoxView(filterViewModel: filterViewModel, filterText: "День 12:00 - 18:00")
+            CheckBoxView(filterViewModel: filterViewModel, filterText: "Вечер 18:00 - 00:00")
+            CheckBoxView(filterViewModel: filterViewModel, filterText: "Ночь 00:00 - 06:00")
             
             Text("Подсказывать варианты с пересадками")
                 .padding()
@@ -57,26 +47,8 @@ struct RouteTimeSelectionView: View {
                 .font(.system(size: 24))
                 .frame(maxWidth: .infinity, alignment: .leading)
             
-            HStack {
-                Text("Да")
-                Spacer()
-                Image(systemName: isShowWithTransfers ?? false ? "largecircle.fill.circle" : "circle")
-                    .onTapGesture {
-                        isShowWithTransfers = true
-                    }
-               
-            }
-            .padding()
-            
-            HStack {
-                Text("Нет")
-                Spacer()
-                Image(systemName: !(isShowWithTransfers ?? true) ? "largecircle.fill.circle" : "circle")
-                    .onTapGesture {
-                        isShowWithTransfers = false
-                    }
-            }
-            .padding()
+            RadioView(filterViewModel: filterViewModel, radioText: "Да", isShowWithTransfers: true)
+            RadioView(filterViewModel: filterViewModel, radioText: "Нет", isShowWithTransfers: false)
             
             Spacer()
             
@@ -107,6 +79,9 @@ struct RouteTimeSelectionView: View {
     
 
 
-#Preview {
-    RouteTimeSelectionView(isShowWithTransfers: .constant(false), isFiltered: .constant(false))
+struct FilterView_Previews: PreviewProvider {
+    static var previews: some View {
+        let viewModel = RouteCarrierViewModel()
+        return RouteTimeSelectionView(filterViewModel: viewModel, isFiltered: .constant(true))
+    }
 }

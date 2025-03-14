@@ -1,142 +1,102 @@
-//
-//  DataNetworkService.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 09.02.2025.
-//
-
 import SwiftUI
 import OpenAPIURLSession
 
-struct DataNetworkService: View {
+struct DataNetworkService {
+    @MainActor static let shared = DataNetworkService()
+    
     private let client: Client
     private let service: YPTravelNetworkService
-    
     
     init () {
         do {
             client = Client(serverURL: try Servers.Server1.url(), transport: URLSessionTransport())
             service = YPTravelNetworkService(client: self.client, apikey: Constants.apiKey)
         } catch {
-            fatalError()
+            fatalError("Ошибка при создании сервиса загрузки данных: \(error.localizedDescription)")
         }
     }
- 
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Button("Вывести расписание рейсов между станциями (scheduleBetweenStations)") {
-                scheduleBetweenStations()
-            }.padding()
-            Button("Вывести список рейсов у станции (stationSchedule)") {
-                stationSchedule()
-            }.padding()
-            Button("Вывести список станций на маршруте (routeStations)") {
-                routeStations()
-            }.padding()
-            Button("Вывести ближайшие станции (nearestStations)") {
-                nearestStations()
-            }.padding()
-            Button("Вывести ближайший город (nearestCity)") {
-                nearestCity()
-            }.padding()
-            Button("Вывести данные о перевозчике на маршруте (carrierInfo)") {
-                carrierInfo()
-            }.padding()
-            Button("Получить данные всех станций (allStations)") {
-                allStations()
-            }.padding()
-            Button("Получить копирайты (copyrights)") {
-                copyrights()
-            }
-        }
-        .padding()
-    }
-    
-    
     
     /// Метод вывода расписания рейсов между двумя остановками
-    private func scheduleBetweenStations() {
-        Task {
-            do {
-                let schedule = try await service.GetScheduleBetweenStations(from: "c146", to: "c213")
-                print(schedule.self)
-            } catch {
-                print(error)
-            }
+    func scheduleBetweenStations(fromStationCode: String, toStationCode: String) async throws -> TwoStationSchedule {
+        do {
+            let schedule = try await service.GetScheduleBetweenStations(from: fromStationCode, to: toStationCode)
+            return schedule
+        } catch {
+            print("Ошибка загрузки маршрутов между станциями: \(error.localizedDescription)")
+            return TwoStationSchedule(segments: nil)
         }
     }
     
     /// Метод вывода списка рейсов проходящих через остановку
-    private func stationSchedule() {
-        Task {
-            do {
-                let schedule = try await service.GetStationSchedule(station: "s9600213")
-                print(schedule.schedule ?? "No data")
-            } catch {
-                print(error)
-            }
+    private func stationSchedule() async throws {
+        do {
+            let _ = try await service.GetStationSchedule(station: "s9600213")
+        } catch {
+            print("Ошибка загрузки маршрутов станции: \(error.localizedDescription)")
         }
     }
     
     /// Метод вывода списка остановок на маршруте
-    private func routeStations() {
-        Task {
-            do {
-                let stations = try await service.GetRouteStations(uid: "028S_3_2")
-                print(stations.title ?? "No stations data")
-            } catch {
-                print(error.localizedDescription)
-            }
+    private func routeStations() async throws {
+        do {
+            let _ = try await service.GetRouteStations(uid: "028S_3_2")
+        } catch {
+            print("Ошибка загрузки остановок на маршруте: \(error.localizedDescription)")
         }
     }
     
     /// Метод вывода ближайшей остановки
-    private func nearestStations() {
-        Task {
-            let stations = try await service.GetNearestStations(lat: 55.813902, lng: 37.597299, distance: 5)
-            print(stations.stations ?? "No data")
+    private func nearestStations() async throws {
+        do  {
+            let _ = try await service.GetNearestStations(lat: 55.813902, lng: 37.597299, distance: 5)
+        } catch {
+            print("Ошибка загрузки ближайшей остановки: \(error.localizedDescription)")
         }
     }
     
     /// Метод вывода ближайшего города
-    private func nearestCity() {
-        Task {
-            let settlements = try await service.GetNearestCity(lat: 55.813902, lng: 37.597299)
-            print(settlements.title ?? "No city data")
+    private func nearestCity() async throws {
+        do {
+            let _ = try await service.GetNearestCity(lat: 55.813902, lng: 37.597299)
+        } catch {
+            print("Ошибка загрузки ближайшего города: \(error.localizedDescription)")
         }
     }
     
     /// Метод вывода информации о перевозчике
-    private func carrierInfo() {
-        Task {
-            let carrierInfo = try await service.GetCarrierInfo(code: "112")
-            print(carrierInfo.carrier ?? "No carrier data")
+    func carrierInfo(code: String) async throws -> CarrierInfoStruct {
+        do {
+            let carrierInfo = try await service.GetCarrierInfo(code: code)
+            let jsonData = try JSONSerialization.data(withJSONObject: carrierInfo.carrier?.value as? [String: Any], options: [])
+            let decoder = JSONDecoder()
+            let carrierResponse = try decoder.decode(CarrierResponseStruct.self, from: jsonData)
+            let carrierList = CarrierInfoStruct(carrierImage: "RZD", carrierName: carrierResponse.title ?? "", carrierMail: carrierResponse.email ?? "", carrierPhone: carrierResponse.phone ?? "")
+            return carrierList
+        } catch {
+            print("Ошика загрузки информации о перевозчике: \(error.localizedDescription)")
+            return CarrierInfoStruct(carrierImage: "", carrierName: "", carrierMail: "", carrierPhone: "")
         }
     }
     
     /// Метод вывода всех доступных остановок
-    private func allStations() {
-        Task {
+    func allStations() async throws -> [AllCitiesStruct] {
+        do {
             let stations = try await service.GetAllStations()
-            for countries in stations.countries! {
-                print(countries.title ?? "No data")
-            }
+            let rusArray = stations.countries?.filter { $0.title == "Россия" }
+            return rusArray?.first?.regions?.flatMap { $0.settlements ?? [] } ?? []
+        } catch {
+            print("Ошибка загрузки станций: \(error.localizedDescription)")
+            return []
         }
     }
     
     /// Метод вывода копирайтов яндекса
-    private func copyrights() {
-        Task {
-            let copyrights = try await service.GetCopyright()
-            print(copyrights.copyright ?? "No copyright data")
+    private func copyrights() async throws {
+        do {
+            let _ = try await service.GetCopyright()
+        } catch {
+            print("Ошибка загрузки копирайтов Яндекса: \(error.localizedDescription)")
         }
     }
 }
-    
 
-#Preview {
-    DataNetworkService()
-}

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84A9FACE2D7A4862007A7A6A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 84A9FACD2D7A4862007A7A6A /* Kingfisher */; };
 		84E651922D3310E8005E054A /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 84E651912D3310E8005E054A /* OpenAPIRuntime */; };
 		84E651952D331102005E054A /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 84E651942D331102005E054A /* OpenAPIURLSession */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84A9FACE2D7A4862007A7A6A /* Kingfisher in Frameworks */,
 				84E651952D331102005E054A /* OpenAPIURLSession in Frameworks */,
 				84E651922D3310E8005E054A /* OpenAPIRuntime in Frameworks */,
 			);
@@ -96,6 +98,7 @@
 			packageProductDependencies = (
 				84E651912D3310E8005E054A /* OpenAPIRuntime */,
 				84E651942D331102005E054A /* OpenAPIURLSession */,
+				84A9FACD2D7A4862007A7A6A /* Kingfisher */,
 			);
 			productName = ypTravel;
 			productReference = 84E6515E2D305C8E005E054A /* ypTravel.app */;
@@ -129,6 +132,7 @@
 				84E651782D330EE3005E054A /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
 				84E651902D3310E8005E054A /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
 				84E651932D331102005E054A /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
+				84A9FACC2D7A4862007A7A6A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 84E6515F2D305C8E005E054A /* Products */;
@@ -228,6 +232,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
 			};
 			name = Debug;
 		};
@@ -283,6 +288,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -381,6 +387,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		84A9FACC2D7A4862007A7A6A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.3.0;
+			};
+		};
 		84E651782D330EE3005E054A /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-generator";
@@ -408,6 +422,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		84A9FACD2D7A4862007A7A6A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 84A9FACC2D7A4862007A7A6A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
 		84E6518B2D331052005E054A /* OpenAPIGenerator */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 84E651782D330EE3005E054A /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
