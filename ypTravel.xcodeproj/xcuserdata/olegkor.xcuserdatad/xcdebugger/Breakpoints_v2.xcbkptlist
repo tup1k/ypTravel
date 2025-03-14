@@ -39,16 +39,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "ABDF471B-1066-4A04-8E4C-1FC82AA4AB1D"
+            uuid = "D20A90A6-1621-4B18-BCF6-2C1B80DBB9B0"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ypTravel/ViewModel/RouteCarrierViewModel.swift"
+            filePath = "ypTravel/View/FindTheRoute/LargeStories/LargeStoriesView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "carrierArray"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>

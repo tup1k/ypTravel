@@ -30,7 +30,7 @@ struct DataNetworkService {
     /// Метод вывода списка рейсов проходящих через остановку
     private func stationSchedule() async throws {
         do {
-            let schedule = try await service.GetStationSchedule(station: "s9600213")
+            let _ = try await service.GetStationSchedule(station: "s9600213")
         } catch {
             print("Ошибка загрузки маршрутов станции: \(error.localizedDescription)")
         }
@@ -39,7 +39,7 @@ struct DataNetworkService {
     /// Метод вывода списка остановок на маршруте
     private func routeStations() async throws {
         do {
-            let stations = try await service.GetRouteStations(uid: "028S_3_2")
+            let _ = try await service.GetRouteStations(uid: "028S_3_2")
         } catch {
             print("Ошибка загрузки остановок на маршруте: \(error.localizedDescription)")
         }
@@ -48,7 +48,7 @@ struct DataNetworkService {
     /// Метод вывода ближайшей остановки
     private func nearestStations() async throws {
         do  {
-            let stations = try await service.GetNearestStations(lat: 55.813902, lng: 37.597299, distance: 5)
+            let _ = try await service.GetNearestStations(lat: 55.813902, lng: 37.597299, distance: 5)
         } catch {
             print("Ошибка загрузки ближайшей остановки: \(error.localizedDescription)")
         }
@@ -57,7 +57,7 @@ struct DataNetworkService {
     /// Метод вывода ближайшего города
     private func nearestCity() async throws {
         do {
-            let settlements = try await service.GetNearestCity(lat: 55.813902, lng: 37.597299)
+            let _ = try await service.GetNearestCity(lat: 55.813902, lng: 37.597299)
         } catch {
             print("Ошибка загрузки ближайшего города: \(error.localizedDescription)")
         }
@@ -93,7 +93,7 @@ struct DataNetworkService {
     /// Метод вывода копирайтов яндекса
     private func copyrights() async throws {
         do {
-            let copyrights = try await service.GetCopyright()
+            let _ = try await service.GetCopyright()
         } catch {
             print("Ошибка загрузки копирайтов Яндекса: \(error.localizedDescription)")
         }

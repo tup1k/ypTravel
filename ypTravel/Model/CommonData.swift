@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 final class CommonData: ObservableObject {
     static let shared = CommonData()
     

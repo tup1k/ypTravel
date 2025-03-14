@@ -9,6 +9,7 @@ final class RouteCarrierViewModel: ObservableObject {
     @Published var isShowWithTransfers: Bool?
     @Published var isLoading: Bool = false
     
+    
     private var networkViewModel = DataNetworkService()
     let isoFormatter = ISO8601DateFormatter()
    
@@ -16,15 +17,10 @@ final class RouteCarrierViewModel: ObservableObject {
         self.filterArray = []
     }
 
-    
     var carrierArray: [RouteCarrierStruct] {
         carrierList.filter { carrier in
-            let isTransfered = (isShowWithTransfers ?? true) ? true : !carrier.transferInfo
-            let timeFilter = filterArray.isEmpty || filterArray.contains { $0.contains(filterFunction(carrier: carrier)) }
-            print(filterArray)
-            let testTimeFilter = filterArray.contains { $0.contains(filterFunction(carrier: carrier)) }
-            print(Int(carrier.routeStartTime.prefix(2)) ?? 0)
-            print(timeFilter)
+            let isTransfered = isShowWithTransfers ?? true ? !carrier.transferInfo : true
+            let timeFilter = filterArray.isEmpty || filterArray.contains { filterFunction(carrier: carrier).contains($0) }
             return isTransfered && timeFilter
         }
     }
@@ -49,25 +45,43 @@ final class RouteCarrierViewModel: ObservableObject {
         guard !isLoading else { return }
         isLoading = true
         
+        carrierList.removeAll()
+        
         do {
+
             let fetchedRoutes = try await networkViewModel.scheduleBetweenStations(fromStationCode: codeOutput, toStationCode: codeInput)
             
-            for segment in fetchedRoutes.segments ?? [] {
-                let start_time = timeFormatter.string(from: isoFormatter.date(from: segment.departure ?? "") ?? Date())
-                let stop_time = timeFormatter.string(from: isoFormatter.date(from: segment.arrival ?? "") ?? Date())
-                let routeDay = dateFormatter.string(from: isoFormatter.date(from: segment.departure ?? "") ?? Date())
+            guard let segments = fetchedRoutes.segments, !segments.isEmpty else {
+                       print("Нет данных о маршрутах.")
+                       isLoading = false
+                       return
+                   }
+              
+            
+            for segment in segments {
+                let startTime = isoFormatter.date(from: segment.departure ?? "")
+                let stopTime = isoFormatter.date(from: segment.arrival ?? "")
+                
+                let startFormatted = startTime.map { timeFormatter.string(from: $0) } ?? timeFormatter.string(from: Date())
+                let stopFormatted = stopTime.map { timeFormatter.string(from: $0) } ?? timeFormatter.string(from: Date())
+                
+              
+                let routeDay = startTime.map { dateFormatter.string(from: $0) } ?? dateFormatter.string(from: Date())
+                
+                let email = segment.thread?.carrier?.email
+                let phone = segment.thread?.carrier?.phone
                 
                 let newRoute = RouteCarrierStruct(
                     carrierImage: segment.thread?.carrier?.logo ?? "",
-                    carrierName: segment.thread?.carrier?.title ?? "Test",
+                    carrierName: segment.thread?.carrier?.title ?? "Неизвестный перевозчик",
                     transferInfo: segment.has_transfers ?? false,
                     routeDate: routeDay,
-                    routeStartTime: start_time,
-                    routeEndTime: stop_time,
+                    routeStartTime: startFormatted,
+                    routeEndTime: stopFormatted,
                     routeDuration: String(format: "%.f", Double(segment.duration ?? 0) / 3600),
                     carrierCode: String(segment.thread?.carrier?.code ?? 112),
-                    carrierMail: segment.thread?.carrier?.email ?? "Электронная почта отсутстует",
-                    carrierPhone: segment.thread?.carrier?.phone ?? "Номер телефона отсутствует"
+                    carrierMail: (email?.isEmpty == false ? email : "Электронная почта отсутствует") ?? "Электронная почта отсутствует",
+                    carrierPhone: (phone?.isEmpty == false ? phone : "Номер телефона отсутствует") ?? "Номер телефона отсутствует"
                 )
                 carrierList.append(newRoute)
             }

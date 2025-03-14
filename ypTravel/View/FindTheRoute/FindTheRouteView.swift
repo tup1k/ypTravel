@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FindTheRouteView: View {
     @StateObject private var navigationArray: NavigationModel = NavigationModel()
-    @StateObject private var storiesViewModel = StoriesViewModel()
     @StateObject private var routeViewModel = FindTheRouteViewModel(
         fromCity: City(name: "", stations: [Station(name: "", code: "")]),
         toCity: City(name: "", stations: [Station(name: "", code: "")]),
@@ -17,7 +16,7 @@ struct FindTheRouteView: View {
         toStation: Station(name: "", code: "")
     )
     
-    @State private var goToStories: Bool = false
+//    @State private var goToStories: Bool = false
     @State private var goToRouteCarrier: Bool = false
     @Binding var tabBarIsHidden: Bool
     var networkViewModel = DataNetworkService()
@@ -30,10 +29,10 @@ struct FindTheRouteView: View {
                 VStack(spacing: 20) {
                     ScrollView (.horizontal, showsIndicators: false) {
                         LazyHGrid(rows: rows, spacing: 20) {
-                            ForEach(storiesViewModel.stories) { story in
+                            ForEach(routeViewModel.stories) { story in
                                 Button {
-                                    storiesViewModel.selectStory(story: story)
-                                    goToStories = true
+                                    routeViewModel.selectStory(story: story)
+                                    routeViewModel.goToStories = true
                                 } label: {
                                     StoriesCellView(storyImage: story.image, storyText: story.text, isViewed: story.isViewed)
                                 }
@@ -64,8 +63,8 @@ struct FindTheRouteView: View {
                 .navigationDestination(isPresented: $goToRouteCarrier) {
                     CarrierListView(fromPlace: routeViewModel.fromStation, toPlace: routeViewModel.toStation)
                 }
-                .fullScreenCover(isPresented: $goToStories, onDismiss: { tabBarIsHidden = false }) {
-                    LargeStoriesView(stories: storiesViewModel.stories, storyIndex: $storiesViewModel.selectedLargeStory, isViewed: storiesViewModel.isStoryViewed, goToStories: $goToStories)
+                .fullScreenCover(isPresented: $routeViewModel.goToStories, onDismiss: { tabBarIsHidden = false }) {
+                    LargeStoriesView(stories: routeViewModel.stories, storyIndex: routeViewModel.selectedLargeStory, isViewed: routeViewModel.isStoryViewed, goToStories: $routeViewModel.goToStories)
                 }
                 .background(Color.ypWhite)
             }

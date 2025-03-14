@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor 
 final class StoriesMokData: ObservableObject {
     static let shared = StoriesMokData()
     @Published var stories: [Story]

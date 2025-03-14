@@ -40,15 +40,16 @@ struct CarrierListView: View {
                     .font(.system(size: 24, weight: .bold, design: .default))
                     .padding(.horizontal, 16)
                     .lineLimit(nil)
-                
-                
-                if viewModel.carrierArray.isEmpty {
+                    
+                if viewModel.isLoading {
+                    Spacer()
+                    LoadingPlaceholder() 
+                    Spacer()
+                } else if viewModel.carrierArray.isEmpty {
                     Spacer()
                     Text("Вариантов нет")
                         .font(.system(size: 24, weight: .bold))
                     Spacer()
-                } else if viewModel.carrierArray.isEmpty && viewModel.isLoading {
-                    LoadingPlaceholder()
                 } else {
                     ScrollView (showsIndicators: false) {
                         LazyVGrid(columns: columns) {

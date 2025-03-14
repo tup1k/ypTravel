@@ -1,10 +1,3 @@
-//
-//  CarrierInfoView.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 05.02.2025.
-//
-
 import SwiftUI
 import Kingfisher
 
@@ -29,25 +22,22 @@ struct CarrierInfoView: View {
                 Spacer()
             }
             
-            KFImage(URL(string: routeCarrierInfo.carrierImage))
-                .placeholder {
-                    Text("Логотип перевозчика отсутствует")
-                        .frame(width: 343, height: 104)
-                }
-                .resizable()
-                .frame(alignment: .center)
-                .scaledToFit()
-                .padding(.horizontal, 16)
-                    
-//            AsyncImage(url: URL(string: routeCarrierInfo.carrierImage)) { image in
-////                image.resizable()
-//                image.scaledToFill()
-//                .frame(width: 343, height: 104)
-//                .cornerRadius(24)
-//            } placeholder: {
-//                Text("Логотип перевозчика отсутствует")
-//                    .frame(width: 343, height: 104)
-//            }
+            HStack {
+                Spacer()
+                KFImage(URL(string: routeCarrierInfo.carrierImage))
+                    .placeholder {
+                        Text("Логотип перевозчика отсутствует")
+                            .frame(width: 343, height: 104)
+                            .foregroundColor(.ypBlack)
+                    }
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 104)
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                    .padding(.horizontal, 16)
+                Spacer()
+            }
+                
 
             Text(routeCarrierInfo.carrierName)
                 .font(.system(size: 24, weight: .bold))
@@ -61,7 +51,6 @@ struct CarrierInfoView: View {
                     .font(.system(size: 12, weight: .regular))
                     .foregroundColor(.ypBlue)
             }
-            
             
             VStack(alignment: .leading) {
                 Text("Телефон")

@@ -1,12 +1,6 @@
-//
-//  Router.swift
-//  ypTravel
-//
-//  Created by Олег Кор on 14.02.2025.
-//
-
 import SwiftUI
 
+@MainActor
 struct Router {
     @ViewBuilder
     static func destination(for screen: ListOfView, fromCity: Binding<City> ,fromPlace: Binding<Station>, toCity: Binding<City>, toPlace: Binding<Station>) -> some View {

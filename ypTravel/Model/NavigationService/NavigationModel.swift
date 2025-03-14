@@ -16,6 +16,7 @@ enum ListOfView: Hashable {
 //    case carrierInfoView
 }
 
+@MainActor
 final class NavigationModel: ObservableObject {
     @Published var path = NavigationPath()
     
